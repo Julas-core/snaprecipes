@@ -9,7 +9,8 @@ import { Recipe } from "../types";
  */
 export const generateRecipeFromImage = async (
   imageData: string,
-  language: string = 'English'
+  language: string = 'English',
+  dietaryContext?: string
 ): Promise<Recipe> => {
   try {
     // Access the API key using Vite's standard import.meta.env
@@ -41,7 +42,7 @@ export const generateRecipeFromImage = async (
             },
           },
           {
-            text: `Analyze the food in this image and generate a detailed recipe in ${language}. The recipe should include a creative name, a short description, a list of ingredients with measurements, and step-by-step instructions. Ensure the response is in JSON format.`,
+            text: `Analyze the food in this image and generate a detailed recipe in ${language}. The recipe should include a creative name, a short description, a list of ingredients with measurements, and step-by-step instructions. ${dietaryContext ? dietaryContext : ''} Ensure the response is in JSON format.`,
           },
         ],
       },

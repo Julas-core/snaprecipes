@@ -7,9 +7,10 @@ interface HeaderProps {
   user: any | null;
   onSignInClick: () => void;
   onSignOutClick: () => void;
+  onOpenProfile: () => void;
 }
 
-const Header: React.FC<HeaderProps> = ({ cartCount, onOpenCart, user, onSignInClick, onSignOutClick }) => {
+const Header: React.FC<HeaderProps> = ({ cartCount, onOpenCart, user, onSignInClick, onSignOutClick, onOpenProfile }) => {
   return (
     <header className="w-full bg-white/80  shadow-sm sticky top-0 z-40 border-b border-amber-100 no-print">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
@@ -51,13 +52,29 @@ const Header: React.FC<HeaderProps> = ({ cartCount, onOpenCart, user, onSignInCl
             </button>
           ) : (
             <div className="flex items-center gap-3">
-              {user.user_metadata?.avatar_url && (
-                <img
-                  src={user.user_metadata.avatar_url}
-                  alt={user.user_metadata.full_name}
-                  className="w-8 h-8 rounded-full border border-amber-200"
-                />
-              )}
+              <button
+                onClick={onOpenProfile}
+                className="flex items-center gap-2 hover:bg-amber-100/50 p-1.5 rounded-lg transition-colors group"
+                title="Profile Settings"
+              >
+                {user.user_metadata?.avatar_url ? (
+                  <img
+                    src={user.user_metadata.avatar_url}
+                    alt={user.user_metadata.full_name}
+                    className="w-8 h-8 rounded-full border border-amber-200 group-hover:border-amber-400"
+                  />
+                ) : (
+                  <div className="w-8 h-8 rounded-full bg-amber-200 flex items-center justify-center text-amber-800 font-bold">
+                    {user.email?.charAt(0).toUpperCase()}
+                  </div>
+                )}
+                <span className="text-sm font-medium text-amber-800 hidden md:block max-w-[100px] truncate">
+                  {user.user_metadata?.full_name || user.email?.split('@')[0]}
+                </span>
+              </button>
+
+              <div className="h-6 w-px bg-amber-200 mx-1"></div>
+
               <button
                 onClick={onSignOutClick}
                 className="text-sm text-amber-700 hover:text-amber-900 font-medium"

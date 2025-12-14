@@ -17,6 +17,8 @@ import SavedRecipes from './components/SavedRecipes';
 import { supabase } from './services/supabaseClient';
 import { recipeService } from './services/recipeService';
 import { shoppingListService } from './services/shoppingListService';
+import { profileService, UserProfile } from './services/profileService';
+import ProfileSettings from './components/ProfileSettings';
 
 const App: React.FC = () => {
   const [session, setSession] = useState<any>(null);
@@ -33,6 +35,8 @@ const App: React.FC = () => {
   const [isShoppingListOpen, setIsShoppingListOpen] = useState<boolean>(false);
   const [language, setLanguage] = useState<string>('English');
   const [savedRecipes, setSavedRecipes] = useState<Recipe[]>([]);
+  const [isProfileOpen, setIsProfileOpen] = useState(false);
+  const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
 
 
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -76,20 +80,24 @@ const App: React.FC = () => {
     }
   }, [session]);
 
-  // Load saved recipes from DB (or clear if not logged in)
   useEffect(() => {
     if (session?.user) {
-      const loadRecipes = async () => {
+      const loadData = async () => {
         try {
-          const recipes = await recipeService.getSavedRecipes();
+          const [recipes, profile] = await Promise.all([
+            recipeService.getSavedRecipes(),
+            profileService.getProfile(session.user.id)
+          ]);
           setSavedRecipes(recipes);
+          setUserProfile(profile);
         } catch (error) {
-          console.error("Failed to load recipes", error);
+          console.error("Failed to load user data", error);
         }
       };
-      loadRecipes();
+      loadData();
     } else {
       setSavedRecipes([]);
+      setUserProfile(null);
     }
   }, [session]);
 
@@ -271,7 +279,11 @@ const App: React.FC = () => {
     setActiveRecipe(null);
 
     try {
-      const generatedRecipe = await generateRecipeFromImage(image, language);
+      const dietaryContext = userProfile?.dietary_prefs?.length
+        ? `The user has the following dietary preferences/restrictions: ${userProfile.dietary_prefs.join(', ')}. Please adapt the recipe to be suitable for them.`
+        : undefined;
+
+      const generatedRecipe = await generateRecipeFromImage(image, language, dietaryContext);
       setActiveRecipe({ ...generatedRecipe, imageUrl: image });
       setImageUrl(image);
       trackEvent('generate_recipe', { success: true, recipe_name: generatedRecipe.recipeName });
@@ -329,6 +341,26 @@ const App: React.FC = () => {
         user={session?.user}
         onSignInClick={handleSignIn}
         onSignOutClick={handleSignOut}
+        onOpenProfile={() => setIsProfileOpen(true)}
+      />
+
+      <ProfileSettings
+        isOpen={isProfileOpen}
+        onClose={() => setIsProfileOpen(false)}
+        currentPrefs={userProfile?.dietary_prefs || []}
+        onSave={async (prefs) => {
+          if (session?.user) {
+            try {
+              const updated = await profileService.updateProfile(session.user.id, prefs);
+              setUserProfile(updated);
+            } catch (e) {
+              console.error("Failed to save profile", e);
+              setError("Failed to save preferences.");
+            }
+          } else {
+            alert("Please sign in to save preferences.");
+          }
+        }}
       />
 
       {isCameraOpen && <CameraView onCapture={handleCameraCapture} onCancel={() => setIsCameraOpen(false)} />}
