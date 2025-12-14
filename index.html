@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Snap-a-Recipe</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/react-easy-crop/react-easy-crop.css" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ['Montserrat', 'sans-serif'],
+              serif: ['Playfair Display', 'serif'],
+            },
+            keyframes: {
+              steam: {
+                '0%': { transform: 'translateY(0) scale(1)', opacity: '0.6' },
+                '50%': { transform: 'translateY(-20px) scale(1.2)', opacity: '1' },
+                '100%': { transform: 'translateY(-40px) scale(1.5)', opacity: '0' },
+              },
+              pulseGlow: {
+                '0%, 100%': { transform: 'scale(1)', boxShadow: '0 0 0 0 rgba(245, 158, 11, 0.4)' },
+                '50%': { transform: 'scale(1.02)', boxShadow: '0 0 0 10px rgba(245, 158, 11, 0)' }
+              },
+              fadeIn: {
+                '0%': { opacity: '0', transform: 'translateY(10px)' },
+                '100%': { opacity: '1', transform: 'translateY(0)' },
+              },
+              fadeInFast: {
+                '0%': { opacity: '0', transform: 'translateY(-10px)' },
+                '100%': { opacity: '1', transform: 'translateY(0)' },
+              }
+            },
+            animation: {
+              steam: 'steam 2s infinite ease-out',
+              'pulse-glow': 'pulseGlow 2.5s infinite',
+              'fade-in': 'fadeIn 0.5s ease-out forwards',
+              'fade-in-fast': 'fadeInFast 0.2s ease-out forwards',
+            }
+          },
+        },
+      }
+    </script>
+    <style>
+      .legal-content {
+          color: #92400e; /* text-amber-800 */
+      }
+      .legal-content h3 {
+          font-family: 'Playfair Display', serif;
+          font-size: 1.5rem;
+          font-weight: 700;
+          color: #451a03; /* text-amber-950, a bit darker for headings */
+          margin-top: 1.5rem;
+          margin-bottom: 0.5rem;
+      }
+      .legal-content p, .legal-content ul {
+          margin-bottom: 1rem;
+          line-height: 1.75;
+      }
+      .legal-content ul {
+          list-style-position: inside;
+          list-style-type: disc;
+          padding-left: 1rem;
+      }
+      .legal-content li {
+          margin-bottom: 0.5rem;
+      }
+      .legal-content strong {
+          font-weight: 600;
+          color: #78350f; /* text-amber-900 */
+      }
+      .legal-content a {
+          color: #d97706; /* text-amber-600 */
+          text-decoration: underline;
+      }
+      .legal-content a:hover {
+          color: #b45309; /* text-amber-700 */
+      }
+      @media print {
+        .no-print {
+          display: none !important;
+        }
+      }
+    </style>
+  <script type="importmap">
+{
+  "imports": {
+    "react-dom/": "https://aistudiocdn.com/react-dom@^19.1.1/",
+    "@google/genai": "https://aistudiocdn.com/@google/genai@^1.20.0",
+    "react/": "https://aistudiocdn.com/react@^19.1.1/",
+    "react": "https://aistudiocdn.com/react@^19.1.1",
+    "react-easy-crop": "https://aistudiocdn.com/react-easy-crop@^5.0.7",
+    "style-value-types": "https://aistudiocdn.com/style-value-types@^5.1.2",
+    "@supabase/supabase-js": "https://aistudiocdn.com/@supabase/supabase-js@^2.57.4"
+  }
+}
+</script>
+<link rel="stylesheet" href="/index.css">
+</head>
+  <body class="bg-amber-50 font-sans">
+    <div id="root"></div>
+    <script type="module" src="/index.tsx"></script>
+  </body>
+</html>

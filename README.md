@@ -1,0 +1,74 @@
+# Snap-a-Recipe
+
+> Turn your food photos into delicious recipes!
+
+Snap-a-Recipe is a modern web application that leverages the power of AI to generate detailed recipes from a simple photograph of a meal. Snap a picture with your device's camera or upload an existing image, and let the application create a beautiful, easy-to-follow recipe for you.
+
+## ✨ Features
+
+*   **AI-Powered Recipe Generation**: Uses the Google Gemini API to analyze food images and generate unique recipes.
+*   **Camera & Upload**: Supports both taking a new photo and uploading an existing image file.
+*   **Image Cropping**: An intuitive interface to crop and zoom your image, focusing on the dish for the best results.
+*   **Interactive Recipe Display**: A clean, readable layout for recipes, with checkable ingredients and instructions.
+*   **Kitchen Mode**: A full-screen, step-by-step guided cooking experience with large text, perfect for use in the kitchen.
+*   **Shopping List**: Add ingredients from any recipe to a persistent shopping list to keep track of what you need.
+*   **Multi-Language Support**: Generate recipes in various languages including English, Spanish, French, German, and Italian.
+*   **Print & Share**: Easily print a clean version of the recipe or share the text content using your device's native share functionality.
+*   **Responsive Design**: A beautiful and functional user experience across all devices, from mobile phones to desktops.
+*   **Offline Functionality**: The shopping list is saved in your browser's local storage, making it available offline.
+
+## 🛠️ Technology Stack
+
+*   **Frontend**:
+    *   **Framework**: [React](https://reactjs.org/)
+    *   **Language**: [TypeScript](https://www.typescriptlang.org/)
+    *   **Styling**: [Tailwind CSS](https://tailwindcss.com/) for a utility-first CSS workflow.
+*   **AI Model**:
+    *   [Google Gemini API (`gemini-2.5-flash`)](https://ai.google.dev/) for multimodal input and structured JSON output.
+*   **Core Libraries**:
+    *   `@google/genai`: The official SDK for interacting with the Gemini API.
+    *   `react-easy-crop`: For the image cropping component.
+*   **Deployment**: The application is a static single-page application (SPA) that can be served by any static file host.
+
+## 🚀 Getting Started
+
+Follow these instructions to get a copy of the project up and running on your local machine.
+
+### Prerequisites
+
+*   A modern web browser that supports the Camera API (e.g., Chrome, Firefox, Safari).
+*   A valid **Google Gemini API Key**. You can obtain one from the [Google AI Studio](https://aistudio.google.com/app/apikey).
+
+### Installation & Running the App
+
+This project is designed to be run in an environment where environment variables are managed for you. To run it locally, you would typically:
+
+1.  **Clone the repository (if applicable):**
+    ```bash
+    git clone https://github.com/your-username/snap-a-recipe.git
+    cd snap-a-recipe
+    ```
+
+2.  **Set up the API Key:**
+    The application is configured to look for the API key in `process.env.API_KEY`. You will need to use a tool that can inject this environment variable into your static files during a build process or when serving.
+
+3.  **Serve the application:**
+    Since this is a static React application, you can serve the `index.html` file using any local web server. For example, using `serve`:
+    ```bash
+    # Install serve globally if you haven't already
+    npm install -g serve
+
+    # Serve the project directory
+    serve .
+    ```
+    The server will provide a local URL (e.g., `http://localhost:3000`) to open in your browser.
+
+## ⚙️ Configuration
+
+The only required configuration is the Google Gemini API Key.
+
+*   **`API_KEY`**: This is your secret key for the Gemini API. The application expects this to be available as `process.env.API_KEY`. **Do not expose this key publicly or commit it to version control.**
+
+## 📄 License
+
+This project is licensed under the MIT License.

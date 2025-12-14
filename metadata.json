@@ -1,0 +1,7 @@
+{
+  "name": "Snap-a-Recipe",
+  "description": "Generate delicious recipes from photos of your meals. Simply snap a picture with your camera or upload an image, and let AI create a detailed recipe for you.",
+  "requestFramePermissions": [
+    "camera"
+  ]
+}
