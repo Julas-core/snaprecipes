@@ -97,6 +97,9 @@ const App: React.FC = () => {
     if (!supabase) return;
     await supabase.auth.signInWithOAuth({
       provider: 'google',
+      options: {
+        redirectTo: window.location.origin,
+      },
     });
   };
 

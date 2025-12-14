@@ -15,7 +15,7 @@ const Header: React.FC<HeaderProps> = ({ cartCount, onOpenCart, user, onSignInCl
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
         {/* Logo Section */}
         <div className="flex items-center">
-          <img src="Snap a Recipe (Logo) ver-2.svg" alt="Snap-a-Recipe" className="h-12 w-auto object-contain" />
+          <img src="./assets/Snap a Recipe (Logo) ver-2.svg" alt="Snap-a-Recipe" className="h-12 w-auto object-contain" />
         </div>
 
         {/* Right Side Actions */}
