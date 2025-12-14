@@ -5,4 +5,10 @@ export interface Recipe {
   ingredients: string[];
   instructions: string[];
   imageUrl?: string;
+  nutrition?: {
+    calories: string;
+    protein: string;
+    carbs: string;
+    fat: string;
+  };
 }

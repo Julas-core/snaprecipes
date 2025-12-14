@@ -42,7 +42,7 @@ export const generateRecipeFromImage = async (
             },
           },
           {
-            text: `Analyze the food in this image and generate a detailed recipe in ${language}. The recipe should include a creative name, a short description, a list of ingredients with measurements, and step-by-step instructions. ${dietaryContext ? dietaryContext : ''} Ensure the response is in JSON format.`,
+            text: `Analyze the food in this image and generate a detailed recipe in ${language}. The recipe should include a creative name, a short description, a list of ingredients with measurements, step-by-step instructions, and estimated nutritional information (calories, protein, carbs, fat). ${dietaryContext ? dietaryContext : ''} Ensure the response is in JSON format.`,
           },
         ],
       },
@@ -63,8 +63,19 @@ export const generateRecipeFromImage = async (
               items: { type: Type.STRING },
               description: "Step-by-step cooking instructions."
             },
+            nutrition: {
+              type: Type.OBJECT,
+              properties: {
+                calories: { type: Type.STRING, description: "Estimated calories per serving." },
+                protein: { type: Type.STRING, description: "Estimated protein content." },
+                carbs: { type: Type.STRING, description: "Estimated carbohydrate content." },
+                fat: { type: Type.STRING, description: "Estimated fat content." }
+              },
+              required: ["calories", "protein", "carbs", "fat"],
+              description: "Estimated nutritional information."
+            },
           },
-          required: ["recipeName", "description", "ingredients", "instructions"],
+          required: ["recipeName", "description", "ingredients", "instructions", "nutrition"],
         },
       },
     });
