@@ -39,11 +39,13 @@ const CameraView: React.FC<CameraViewProps> = ({ onCapture, onCancel }) => {
 
         // Use optimized constraints to prevent lag
         // 720p is often the sweet spot for balance between quality and performance on mobile web
+        // Limiting frame rate to 24fps can significantly reduce CPU usage and stuttering
         const mediaStream = await navigator.mediaDevices.getUserMedia({
           video: {
             facingMode: 'environment',
             width: { ideal: 1280 },
-            height: { ideal: 720 }
+            height: { ideal: 720 },
+            frameRate: { ideal: 24, max: 30 }
           },
           audio: false,
         });
