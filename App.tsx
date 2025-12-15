@@ -18,6 +18,9 @@ import Home from './pages/Home';
 import Privacy from './pages/Privacy';
 import Terms from './pages/Terms';
 import FAQ from './pages/FAQ';
+import NotFound from './pages/NotFound';
+
+import ErrorBoundary from './components/ErrorBoundary';
 
 const App: React.FC = () => {
   return (
@@ -201,19 +204,22 @@ const AppLayout: React.FC = () => {
 
       {/* Main Routing Content */}
       <main className="w-full max-w-7xl flex-grow flex flex-col items-center p-4 sm:p-6 md:p-8 pt-4 print:max-w-none print:w-full print:block">
-        <Routes>
-          <Route path="/" element={
-            <Home
-              session={session}
-              userProfile={userProfile}
-              shoppingList={shoppingList}
-              onAddToShoppingList={handleAddToShoppingList}
-            />
-          } />
-          <Route path="/privacy" element={<Privacy />} />
-          <Route path="/terms" element={<Terms />} />
-          <Route path="/faq" element={<FAQ />} />
-        </Routes>
+        <ErrorBoundary>
+          <Routes>
+            <Route path="/" element={
+              <Home
+                session={session}
+                userProfile={userProfile}
+                shoppingList={shoppingList}
+                onAddToShoppingList={handleAddToShoppingList}
+              />
+            } />
+            <Route path="/privacy" element={<Privacy />} />
+            <Route path="/terms" element={<Terms />} />
+            <Route path="/faq" element={<FAQ />} />
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </ErrorBoundary>
 
         <Footer />
       </main>

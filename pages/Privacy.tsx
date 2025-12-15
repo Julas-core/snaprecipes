@@ -8,22 +8,21 @@ const Privacy: React.FC = () => {
             <div className="prose dark:prose-invert max-w-none space-y-4">
                 <p><strong>Last Updated: {new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</strong></p>
                 <p>
-                    Welcome to Snap-a-Recipe ("we," "our," or "us"). We are committed to protecting your privacy. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you use our application.
+                    Welcome to Snap-a-Recipe. were itst committed to protecting your privacy. This Privacy Policy explains how Snap-a-Recipe uses and protects the information you provide when using our application.
                 </p>
-
-                <h3 className="text-xl font-semibold mt-6 mb-2">1. Information We Collect</h3>
-                <p>We may collect information about you in a variety of ways. The information we may collect via the Application includes:</p>
+                <h3 className="text-xl font-semibold mt-6 mb-2">1. Information I Collect</h3>
+                <p>I may collect information about you in a variety of ways. The information I may collect via the Application includes:</p>
                 <ul className="list-disc pl-5 space-y-2">
                     <li>
-                        <strong>User-Generated Content:</strong> We process the images you upload or capture to generate recipes. These images are sent to our AI provider for analysis but are not stored on our servers or associated with any personal information.
+                        <strong>User-Generated Content:</strong> I process the images you upload or capture to generate recipes. These images are sent to my AI provider for analysis but are not stored on my servers or associated with any personal information.
                     </li>
                     <li>
-                        <strong>Analytics Data:</strong> We may collect anonymous usage data, such as which features are used, to improve our service. This data is not linked to your personal identity.
+                        <strong>Analytics Data:</strong> I may collect anonymous usage data, such as which features are used, to improve my service. This data is not linked to your personal identity.
                     </li>
                 </ul>
 
                 <h3 className="text-xl font-semibold mt-6 mb-2">2. Use of Your Information</h3>
-                <p>Having accurate information about you permits us to provide you with a smooth, efficient, and customized experience. Specifically, we may use information collected about you via the Application to:</p>
+                <p>Having accurate information about you permits me to provide you with a smooth, efficient, and customized experience. Specifically, I may use information collected about you via the Application to:</p>
                 <ul className="list-disc pl-5 space-y-2">
                     <li>Generate recipes based on the images you provide.</li>
                     <li>Monitor and analyze usage and trends to improve your experience with the Application.</li>
@@ -31,7 +30,7 @@ const Privacy: React.FC = () => {
 
                 <h3 className="text-xl font-semibold mt-6 mb-2">3. Security of Your Information</h3>
                 <p>
-                    We are committed to protecting your data. Since we do not store your images or personal data, the risk of a data breach is minimized. We use secure, encrypted connections (HTTPS) for all data transmissions to our AI service provider.
+                    I am committed to protecting your data. Since I do not store your images or personal data, the risk of a data breach is minimized. I use secure, encrypted connections (HTTPS) for all data transmissions to my AI service provider.
                 </p>
 
                 <h3 className="text-xl font-semibold mt-6 mb-2">4. Third-Party Services</h3>
@@ -41,7 +40,7 @@ const Privacy: React.FC = () => {
                 </ul>
 
                 <h3 className="text-xl font-semibold mt-6 mb-2">5. Contact Us</h3>
-                <p>If you have questions or comments about this Privacy Policy, please contact us at: [Your Contact Email Here]</p>
+                <p>If you have questions or comments about this Privacy Policy, please contact me at: Julasmame@gmail.com</p>
             </div>
         </div>
     );
