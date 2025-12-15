@@ -45,7 +45,7 @@ const CameraView: React.FC<CameraViewProps> = ({ onCapture, onCancel }) => {
             facingMode: 'environment',
             width: { ideal: 1280 },
             height: { ideal: 720 },
-            frameRate: { ideal: 24, max: 30 }
+            frameRate: { ideal: 15, max: 24 }
           },
           audio: false,
         });
