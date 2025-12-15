@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { ShoppingCartIcon, SunIcon, MoonIcon } from './icons';
 import logo from '../assets/Snap a Recipe (Logo) ver-2.svg';
 import { useTheme } from './ThemeContext';
@@ -20,7 +21,9 @@ const Header: React.FC<HeaderProps> = ({ cartCount, onOpenCart, user, onSignInCl
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
         {/* Logo Section */}
         <div className="flex items-center">
-          <img src={logo} alt="Snap-a-Recipe" className="h-12 w-auto object-contain" />
+          <Link to="/" className="flex items-center">
+            <img src={logo} alt="Snap-a-Recipe" className="h-12 w-auto object-contain" />
+          </Link>
         </div>
 
         {/* Right Side Actions */}

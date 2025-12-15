@@ -4,8 +4,9 @@
  * replaced with a real analytics provider like Plausible, Google Analytics, etc.
  */
 
-type EventName = 
+type EventName =
   | 'page_view'
+  | 'page_view_home'
   | 'generate_recipe'
   | 'save_recipe'
   | 'delete_recipe'
@@ -36,7 +37,7 @@ export const trackEvent = (eventName: EventName, props?: EventProps): void => {
   // if (window.gtag) {
   //   window.gtag('event', eventName, props);
   // }
-  
+
   console.log(`[ANALYTICS] Event: ${eventName}`, props || '');
 
   // For Vercel Analytics (if you were using Next.js/Vercel)
