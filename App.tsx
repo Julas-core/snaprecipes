@@ -485,10 +485,13 @@ const App: React.FC = () => {
                   className="block w-full px-4 py-2 bg-white border border-amber-300 rounded-lg focus:ring-2 focus:ring-amber-400 focus:outline-none transition-shadow"
                 >
                   <option value="English">English</option>
-                  <option value="Spanish">Spanish</option>
-                  <option value="French">French</option>
-                  <option value="German">German</option>
-                  <option value="Italian">Italian</option>
+                  <option value="Spanish">Español</option>
+                  <option value="French">Français</option>
+                  <option value="German">Deutsch</option>
+                  <option value="Italian">Italiano</option>
+                  <option value="Arabic">العربية</option>
+                  <option value="Tigrigna">ትግርኛ</option>
+                  <option value="Amharic">አማርኛ</option>
                 </select>
               </div>
 

@@ -1,7 +1,6 @@
 import React, { useState, useMemo } from 'react';
 import { Recipe } from '../types';
-import { KitchenIcon, PrintIcon, ShareIcon, XIcon, CopyIcon, ShoppingCartIcon, HeartIcon, MicrophoneIcon } from './icons';
-import { useVoiceControl } from '../hooks/useVoiceControl';
+import { KitchenIcon, PrintIcon, ShareIcon, XIcon, CopyIcon, ShoppingCartIcon, HeartIcon } from './icons';
 
 interface RecipeDisplayProps {
   recipe: Recipe;
@@ -57,30 +56,6 @@ const RecipeDisplay: React.FC<RecipeDisplayProps> = ({ recipe, onAddToShoppingLi
   const resetSteps = () => {
     setCompletedSteps(new Set());
   };
-
-  const handleNextStep = () => {
-    if (currentStepIndex < recipe.instructions.length - 1 && !allStepsCompleted) {
-      handleToggleStep(currentStepIndex);
-    }
-  };
-
-  const handlePrevStep = () => {
-    // Logic to uncheck previous step if needed, but for now we just handle 'Mark Complete' (Next) via voice usually.
-    // To strictly support 'back', we might need to uncheck the last completed step.
-    if (completedSteps.size > 0) {
-      // Find highest index
-      const max = Math.max(...Array.from(completedSteps));
-      const newSet = new Set(completedSteps);
-      newSet.delete(max);
-      setCompletedSteps(newSet);
-    }
-  };
-
-  const { isListening, toggleListening, transcript } = useVoiceControl({
-    onNext: () => !allStepsCompleted && setCompletedSteps(prev => new Set(prev).add(currentStepIndex)),
-    onBack: handlePrevStep,
-    onIngredients: () => setShowIngredients(true)
-  });
 
   const handlePrint = () => window.print();
 
@@ -183,18 +158,6 @@ const RecipeDisplay: React.FC<RecipeDisplayProps> = ({ recipe, onAddToShoppingLi
             <p className="text-xl sm:text-2xl md:text-3xl text-amber-800 font-light min-h-[10rem] sm:min-h-[12rem] flex items-center justify-center p-4">
               {allStepsCompleted ? "You've successfully completed all the steps." : recipe.instructions[currentStepIndex]}
             </p>
-
-            {/* Voice Control Indicator */}
-            <div className="flex flex-col items-center mt-4 h-12">
-              <button
-                onClick={toggleListening}
-                className={`flex items-center gap-2 px-4 py-2 rounded-full transition-all ${isListening ? 'bg-red-100 text-red-600 animate-pulse' : 'bg-gray-100 text-gray-600'}`}
-              >
-                <MicrophoneIcon className={`w-5 h-5 ${isListening ? 'fill-current' : ''}`} />
-                <span className="text-sm font-semibold">{isListening ? 'Listening...' : 'Voice Control'}</span>
-              </button>
-              {isListening && transcript && <p className="text-xs text-gray-400 mt-1">"{transcript}"</p>}
-            </div>
 
             <div className="flex flex-col sm:flex-row justify-center items-center gap-4 mt-8">
               {!allStepsCompleted && (
