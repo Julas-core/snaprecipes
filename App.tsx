@@ -20,7 +20,17 @@ import { shoppingListService } from './services/shoppingListService';
 import { profileService, UserProfile } from './services/profileService';
 import ProfileSettings from './components/ProfileSettings';
 
+import { ThemeProvider } from './components/ThemeContext';
+
 const App: React.FC = () => {
+  return (
+    <ThemeProvider>
+      <MainContent />
+    </ThemeProvider>
+  );
+};
+
+const MainContent: React.FC = () => {
   const [session, setSession] = useState<any>(null);
   const [image, setImage] = useState<string | null>(null);
   const [imageUrl, setImageUrl] = useState<string | null>(null);
@@ -333,7 +343,7 @@ const App: React.FC = () => {
   const uncheckedShoppingListCount = shoppingList.filter(item => !item.checked).length;
 
   return (
-    <div className="min-h-screen w-full flex flex-col items-center bg-amber-50 text-amber-900 print:bg-white print:block">
+    <div className="min-h-screen w-full flex flex-col items-center bg-amber-50 dark:bg-gray-900 text-amber-900 dark:text-gray-100 print:bg-white print:block transition-colors duration-200">
       {/* Header with Logo and Actions */}
       <Header
         cartCount={uncheckedShoppingListCount}
@@ -447,10 +457,10 @@ const App: React.FC = () => {
 
         {/* Hero Title Section */}
         <div className="w-full text-center mb-10 no-print">
-          <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold text-amber-900 drop-shadow-sm font-serif">
+          <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold text-amber-900 dark:text-amber-500 drop-shadow-sm font-serif">
             Snap-a-Recipe
           </h1>
-          <p className="mt-2 text-lg sm:text-xl text-amber-700">
+          <p className="mt-2 text-lg sm:text-xl text-amber-700 dark:text-amber-300">
             Turn your food photos into delicious recipes!
           </p>
         </div>
@@ -458,7 +468,7 @@ const App: React.FC = () => {
         <div className="w-full flex-grow flex flex-col justify-center items-center">
           {/* Error Message Alert */}
           {error && (
-            <div className="w-full max-w-2xl bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg relative mb-6 shadow-sm animate-fade-in" role="alert">
+            <div className="w-full max-w-2xl bg-red-50 dark:bg-red-900/30 border border-red-200 dark:border-red-800 text-red-700 dark:text-red-300 px-4 py-3 rounded-lg relative mb-6 shadow-sm animate-fade-in" role="alert">
               <strong className="font-bold">Oops! </strong>
               <span className="block sm:inline">{error}</span>
               <button
@@ -472,17 +482,17 @@ const App: React.FC = () => {
           )}
 
           {!image && !imageToCrop && !activeRecipe && (
-            <div className="w-full max-w-4xl bg-white/60 backdrop-blur-sm p-8 rounded-2xl shadow-lg text-center animate-fade-in no-print">
-              <h2 className="text-2xl font-semibold mb-4 font-serif">Get Started</h2>
-              <p className="text-amber-800 mb-6">Choose how to provide an image of your meal:</p>
+            <div className="w-full max-w-4xl bg-white/60 dark:bg-gray-800/60 backdrop-blur-sm p-8 rounded-2xl shadow-lg dark:shadow-black/30 text-center animate-fade-in no-print">
+              <h2 className="text-2xl font-semibold mb-4 font-serif text-amber-900 dark:text-amber-100">Get Started</h2>
+              <p className="text-amber-800 dark:text-amber-200 mb-6">Choose how to provide an image of your meal:</p>
 
               <div className="max-w-xs mx-auto mb-6">
-                <label htmlFor="language-select" className="block text-sm font-medium text-amber-800 mb-2">Recipe Language</label>
+                <label htmlFor="language-select" className="block text-sm font-medium text-amber-800 dark:text-amber-200 mb-2">Recipe Language</label>
                 <select
                   id="language-select"
                   value={language}
                   onChange={(e) => setLanguage(e.target.value)}
-                  className="block w-full px-4 py-2 bg-white border border-amber-300 rounded-lg focus:ring-2 focus:ring-amber-400 focus:outline-none transition-shadow"
+                  className="block w-full px-4 py-2 bg-white dark:bg-gray-700 border border-amber-300 dark:border-gray-600 dark:text-white rounded-lg focus:ring-2 focus:ring-amber-400 focus:outline-none transition-shadow"
                 >
                   <option value="English">English</option>
                   <option value="Spanish">Español</option>
@@ -559,9 +569,9 @@ const App: React.FC = () => {
                     />
                   </div>
                 ) : (
-                  <div className="w-full text-center bg-white/60 backdrop-blur-sm p-8 rounded-2xl shadow-lg animate-fade-in flex flex-col justify-center h-full no-print">
-                    <h2 className="text-2xl font-semibold mb-4 font-serif text-amber-900">Image Ready!</h2>
-                    <p className="text-amber-800 mb-8 max-w-sm mx-auto">Your photo is perfectly cropped and ready to be transformed into a delicious recipe.</p>
+                  <div className="w-full text-center bg-white/60 dark:bg-gray-800/60 backdrop-blur-sm p-8 rounded-2xl shadow-lg animate-fade-in flex flex-col justify-center h-full no-print">
+                    <h2 className="text-2xl font-semibold mb-4 font-serif text-amber-900 dark:text-amber-100">Image Ready!</h2>
+                    <p className="text-amber-800 dark:text-amber-200 mb-8 max-w-sm mx-auto">Your photo is perfectly cropped and ready to be transformed into a delicious recipe.</p>
                     <button onClick={handleGetRecipe} className="group flex items-center justify-center mx-auto gap-3 px-8 py-4 bg-gradient-to-br from-amber-500 to-orange-600 text-white text-xl font-bold rounded-xl shadow-lg hover:from-amber-600 hover:to-orange-700 transition-all duration-300 transform hover:scale-105 focus:outline-none focus:ring-4 focus:ring-amber-300 animate-pulse-glow">
                       <WandIcon className="w-7 h-7 transition-transform duration-300 group-hover:rotate-12" />
                       Generate Recipe

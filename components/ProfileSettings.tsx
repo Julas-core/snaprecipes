@@ -59,17 +59,17 @@ const ProfileSettings: React.FC<ProfileSettingsProps> = ({ isOpen, onClose, curr
             aria-modal="true"
         >
             <div
-                className="bg-amber-50 rounded-2xl shadow-2xl p-6 md:p-8 max-w-md w-full m-4 relative"
+                className="bg-amber-50 dark:bg-gray-800 rounded-2xl shadow-2xl p-6 md:p-8 max-w-md w-full m-4 relative transition-colors"
                 onClick={e => e.stopPropagation()}
             >
                 <div className="flex justify-between items-center mb-6">
-                    <h2 className="text-2xl font-serif font-bold text-amber-900">Dietary Preferences</h2>
-                    <button onClick={onClose} className="p-1 rounded-full text-amber-700 hover:bg-amber-200 transition-colors">
+                    <h2 className="text-2xl font-serif font-bold text-amber-900 dark:text-amber-100">Dietary Preferences</h2>
+                    <button onClick={onClose} className="p-1 rounded-full text-amber-700 dark:text-amber-400 hover:bg-amber-200 dark:hover:bg-gray-700 transition-colors">
                         <XIcon className="w-6 h-6" />
                     </button>
                 </div>
 
-                <p className="text-amber-800 mb-6 text-sm">
+                <p className="text-amber-800 dark:text-amber-200 mb-6 text-sm">
                     Select any dietary restrictions or preferences. We'll tailor your generated recipes to match!
                 </p>
 
@@ -79,8 +79,8 @@ const ProfileSettings: React.FC<ProfileSettingsProps> = ({ isOpen, onClose, curr
                             key={pref}
                             onClick={() => togglePref(pref)}
                             className={`p-3 rounded-xl border-2 text-sm font-semibold transition-all ${selectedPrefs.has(pref)
-                                    ? 'bg-amber-500 border-amber-500 text-white shadow-md'
-                                    : 'bg-white border-amber-200 text-amber-700 hover:border-amber-400 hover:bg-amber-50'
+                                ? 'bg-amber-500 border-amber-500 text-white shadow-md'
+                                : 'bg-white dark:bg-gray-700 border-amber-200 dark:border-gray-600 text-amber-700 dark:text-amber-200 hover:border-amber-400 dark:hover:border-amber-500 hover:bg-amber-50 dark:hover:bg-gray-600'
                                 }`}
                         >
                             {pref}
@@ -91,7 +91,7 @@ const ProfileSettings: React.FC<ProfileSettingsProps> = ({ isOpen, onClose, curr
                 <div className="flex justify-end gap-3">
                     <button
                         onClick={onClose}
-                        className="px-4 py-2 text-amber-800 font-semibold hover:bg-amber-100 rounded-lg transition-colors"
+                        className="px-4 py-2 text-amber-800 dark:text-amber-200 font-semibold hover:bg-amber-100 dark:hover:bg-gray-700 rounded-lg transition-colors"
                     >
                         Cancel
                     </button>

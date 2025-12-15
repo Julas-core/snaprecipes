@@ -38,28 +38,28 @@ const ShoppingList: React.FC<ShoppingListProps> = ({ isOpen, onClose, items, onT
       aria-labelledby="shopping-list-heading"
     >
       <div
-        className="bg-amber-50 rounded-2xl shadow-2xl p-6 md:p-8 max-w-lg w-full m-4 relative flex flex-col max-h-[85vh]"
+        className="bg-amber-50 dark:bg-gray-800 rounded-2xl shadow-2xl p-6 md:p-8 max-w-lg w-full m-4 relative flex flex-col max-h-[85vh] transition-colors"
         onClick={e => e.stopPropagation()}
       >
-        <div className="flex justify-between items-center mb-4 pb-4 border-b border-amber-200 flex-shrink-0">
-          <h2 id="shopping-list-heading" className="text-3xl font-serif font-bold text-amber-900">Shopping List</h2>
+        <div className="flex justify-between items-center mb-4 pb-4 border-b border-amber-200 dark:border-gray-700 flex-shrink-0">
+          <h2 id="shopping-list-heading" className="text-3xl font-serif font-bold text-amber-900 dark:text-amber-100">Shopping List</h2>
           <button
             onClick={onClose}
-            className="p-1 rounded-full text-amber-700 hover:bg-amber-200 transition-colors"
+            className="p-1 rounded-full text-amber-700 dark:text-amber-400 hover:bg-amber-200 dark:hover:bg-gray-700 transition-colors"
             aria-label="Close shopping list"
           >
             <XIcon className="w-6 h-6" />
           </button>
         </div>
-        
-        <div className="flex-grow overflow-y-auto pr-2 [scrollbar-width:thin] [scrollbar-color:#f59e0b_#fef3c7] [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-track]:bg-amber-100 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-amber-500 hover:[&::-webkit-scrollbar-thumb]:bg-amber-600">
+
+        <div className="flex-grow overflow-y-auto pr-2 [scrollbar-width:thin] [scrollbar-color:#f59e0b_#fef3c7] dark:[scrollbar-color:#d97706_#374151] [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-track]:bg-amber-100 dark:[&::-webkit-scrollbar-track]:bg-gray-700 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-amber-500 dark:[&::-webkit-scrollbar-thumb]:bg-amber-700 hover:[&::-webkit-scrollbar-thumb]:bg-amber-600">
           {items.length === 0 ? (
-            <p className="text-center text-amber-700 py-8">Your shopping list is empty. Add ingredients from a recipe!</p>
+            <p className="text-center text-amber-700 dark:text-amber-300 py-8">Your shopping list is empty. Add ingredients from a recipe!</p>
           ) : (
             <div className="space-y-6">
               {Object.entries(groupedItems).map(([recipeName, recipeItems]) => (
                 <div key={recipeName}>
-                  <h3 className="text-lg font-semibold text-amber-800 mb-2">{recipeName}</h3>
+                  <h3 className="text-lg font-semibold text-amber-800 dark:text-amber-200 mb-2">{recipeName}</h3>
                   <ul className="space-y-3">
                     {recipeItems.map((item, index) => (
                       <li
@@ -69,22 +69,19 @@ const ShoppingList: React.FC<ShoppingListProps> = ({ isOpen, onClose, items, onT
                         tabIndex={0}
                         role="checkbox"
                         aria-checked={item.checked}
-                        className={`flex items-center gap-3 p-2 rounded-lg cursor-pointer transition-all duration-200 ${
-                          item.checked ? 'bg-amber-200/50' : 'hover:bg-amber-100/70'
-                        }`}
+                        className={`flex items-center gap-3 p-2 rounded-lg cursor-pointer transition-all duration-200 ${item.checked ? 'bg-amber-200/50 dark:bg-gray-700/50' : 'hover:bg-amber-100/70 dark:hover:bg-gray-700/80'
+                          }`}
                       >
-                        <div className={`w-5 h-5 rounded-md border-2 ${
-                          item.checked ? 'bg-amber-600 border-amber-600' : 'border-amber-400'
-                        } flex items-center justify-center flex-shrink-0 transition-colors`}>
+                        <div className={`w-5 h-5 rounded-md border-2 ${item.checked ? 'bg-amber-600 border-amber-600 dark:bg-amber-700 dark:border-amber-700' : 'border-amber-400 dark:border-gray-500'
+                          } flex items-center justify-center flex-shrink-0 transition-colors`}>
                           {item.checked && (
                             <svg className="w-3 h-3 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
                             </svg>
                           )}
                         </div>
-                        <span className={`flex-grow transition-all ${
-                          item.checked ? 'line-through text-amber-800/60' : 'text-amber-800'
-                        }`}>
+                        <span className={`flex-grow transition-all ${item.checked ? 'line-through text-amber-800/60 dark:text-gray-400' : 'text-amber-800 dark:text-gray-200'
+                          }`}>
                           {item.text}
                         </span>
                       </li>
@@ -95,9 +92,9 @@ const ShoppingList: React.FC<ShoppingListProps> = ({ isOpen, onClose, items, onT
             </div>
           )}
         </div>
-        
+
         {items.length > 0 && (
-          <div className="mt-6 pt-4 border-t border-amber-200 flex-shrink-0">
+          <div className="mt-6 pt-4 border-t border-amber-200 dark:border-gray-700 flex-shrink-0">
             <button
               onClick={onClear}
               className="w-full py-2 px-4 bg-red-600 text-white font-semibold rounded-lg hover:bg-red-700 transition-all focus:outline-none focus:ring-2 focus:ring-red-500"

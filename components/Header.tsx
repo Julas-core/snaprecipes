@@ -1,6 +1,7 @@
 import React from 'react';
-import { ShoppingCartIcon } from './icons';
+import { ShoppingCartIcon, SunIcon, MoonIcon } from './icons';
 import logo from '../assets/Snap a Recipe (Logo) ver-2.svg';
+import { useTheme } from './ThemeContext';
 
 interface HeaderProps {
   cartCount: number;
@@ -12,8 +13,10 @@ interface HeaderProps {
 }
 
 const Header: React.FC<HeaderProps> = ({ cartCount, onOpenCart, user, onSignInClick, onSignOutClick, onOpenProfile }) => {
+  const { theme, toggleTheme } = useTheme();
+
   return (
-    <header className="w-full bg-white/80  shadow-sm sticky top-0 z-40 border-b border-amber-100 no-print">
+    <header className="w-full bg-white/80 dark:bg-gray-900/90 shadow-sm sticky top-0 z-40 border-b border-amber-100 dark:border-gray-800 no-print backdrop-blur-md transition-colors duration-200">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
         {/* Logo Section */}
         <div className="flex items-center">
@@ -22,6 +25,14 @@ const Header: React.FC<HeaderProps> = ({ cartCount, onOpenCart, user, onSignInCl
 
         {/* Right Side Actions */}
         <div className="flex items-center gap-3 sm:gap-4">
+          {/* Theme Toggle */}
+          <button
+            onClick={toggleTheme}
+            className="p-2 rounded-full text-amber-800 dark:text-amber-400 hover:bg-amber-100 dark:hover:bg-gray-800 transition-colors"
+            aria-label="Toggle theme"
+          >
+            {theme === 'light' ? <MoonIcon className="w-5 h-5" /> : <SunIcon className="w-5 h-5" />}
+          </button>
           {/* Shopping Cart Button */}
           <button
             onClick={onOpenCart}
@@ -55,7 +66,7 @@ const Header: React.FC<HeaderProps> = ({ cartCount, onOpenCart, user, onSignInCl
             <div className="flex items-center gap-3">
               <button
                 onClick={onOpenProfile}
-                className="flex items-center gap-2 hover:bg-amber-100/50 p-1.5 rounded-lg transition-colors group"
+                className="flex items-center gap-2 hover:bg-amber-100/50 dark:hover:bg-gray-800 p-1.5 rounded-lg transition-colors group"
                 title="Profile Settings"
               >
                 {user.user_metadata?.avatar_url ? (
@@ -69,16 +80,16 @@ const Header: React.FC<HeaderProps> = ({ cartCount, onOpenCart, user, onSignInCl
                     {user.email?.charAt(0).toUpperCase()}
                   </div>
                 )}
-                <span className="text-sm font-medium text-amber-800 hidden md:block max-w-[100px] truncate">
+                <span className="text-sm font-medium text-amber-800 dark:text-amber-200 hidden md:block max-w-[100px] truncate">
                   {user.user_metadata?.full_name || user.email?.split('@')[0]}
                 </span>
               </button>
 
-              <div className="h-6 w-px bg-amber-200 mx-1"></div>
+              <div className="h-6 w-px bg-amber-200 dark:bg-gray-700 mx-1"></div>
 
               <button
                 onClick={onSignOutClick}
-                className="text-sm text-amber-700 hover:text-amber-900 font-medium"
+                className="text-sm text-amber-700 dark:text-amber-400 hover:text-amber-900 dark:hover:text-amber-200 font-medium"
               >
                 Sign Out
               </button>

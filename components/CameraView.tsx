@@ -25,7 +25,7 @@ const CameraView: React.FC<CameraViewProps> = ({ onCapture, onCancel }) => {
         setError("Camera access is not supported by your browser.");
         return;
       }
-      
+
       try {
         // Proactively check permission status using the Permissions API if available.
         if (navigator.permissions && navigator.permissions.query) {
@@ -36,7 +36,7 @@ const CameraView: React.FC<CameraViewProps> = ({ onCapture, onCancel }) => {
             return; // Stop here if permission is already denied.
           }
         }
-        
+
         // If not denied (i.e., 'granted' or 'prompt'), try to get the user media.
         // This will trigger the permission prompt if the state was 'prompt'.
         const mediaStream = await navigator.mediaDevices.getUserMedia({
@@ -55,7 +55,7 @@ const CameraView: React.FC<CameraViewProps> = ({ onCapture, onCancel }) => {
         if (err.name === 'NotAllowedError' || err.name === 'PermissionDeniedError') {
           setError("Camera access was denied. To take a photo, you'll need to grant permission in your browser's site settings.");
         } else if (err.name === 'NotFoundError' || err.name === 'DevicesNotFoundError') {
-           setError("No camera found. Please ensure a camera is connected and enabled.");
+          setError("No camera found. Please ensure a camera is connected and enabled.");
         } else {
           setError("Could not access camera. It might be in use by another application. Please check and try again.");
         }
@@ -102,28 +102,28 @@ const CameraView: React.FC<CameraViewProps> = ({ onCapture, onCancel }) => {
       </button>
 
       {error ? (
-          <div className="w-full max-w-lg bg-amber-50 rounded-lg p-8 text-center shadow-2xl flex flex-col items-center">
-              <CameraOffIcon className="h-16 w-16 text-red-500 mb-4" />
-              <h3 className="text-2xl font-serif font-bold text-red-700 mb-3">Camera Access Needed</h3>
-              <p className="text-amber-800">{error}</p>
-          </div>
+        <div className="w-full max-w-lg bg-amber-50 dark:bg-gray-800 rounded-lg p-8 text-center shadow-2xl flex flex-col items-center">
+          <CameraOffIcon className="h-16 w-16 text-red-500 mb-4" />
+          <h3 className="text-2xl font-serif font-bold text-red-700 dark:text-red-400 mb-3">Camera Access Needed</h3>
+          <p className="text-amber-800 dark:text-gray-300">{error}</p>
+        </div>
       ) : (
-          <>
-              <div className="relative w-full max-w-2xl aspect-[4/3] rounded-lg overflow-hidden shadow-2xl">
-                  <video ref={videoRef} autoPlay playsInline className="w-full h-full object-cover"></video>
-              </div>
-              <canvas ref={canvasRef} className="hidden"></canvas>
-              <div className="mt-6 flex space-x-4">
-                  <button
-                      onClick={handleCapture}
-                      disabled={!stream}
-                      className="w-20 h-20 bg-white rounded-full flex items-center justify-center ring-4 ring-white/30 disabled:opacity-50 transition-transform duration-200 ease-in-out hover:scale-105"
-                      aria-label="Capture photo"
-                  >
-                      <div className="w-16 h-16 bg-white rounded-full border-4 border-amber-600"></div>
-                  </button>
-              </div>
-          </>
+        <>
+          <div className="relative w-full max-w-2xl aspect-[4/3] rounded-lg overflow-hidden shadow-2xl">
+            <video ref={videoRef} autoPlay playsInline className="w-full h-full object-cover"></video>
+          </div>
+          <canvas ref={canvasRef} className="hidden"></canvas>
+          <div className="mt-6 flex space-x-4">
+            <button
+              onClick={handleCapture}
+              disabled={!stream}
+              className="w-20 h-20 bg-white rounded-full flex items-center justify-center ring-4 ring-white/30 disabled:opacity-50 transition-transform duration-200 ease-in-out hover:scale-105"
+              aria-label="Capture photo"
+            >
+              <div className="w-16 h-16 bg-white rounded-full border-4 border-amber-600"></div>
+            </button>
+          </div>
+        </>
       )}
     </div>
   );

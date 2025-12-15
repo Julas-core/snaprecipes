@@ -105,11 +105,11 @@ const RecipeDisplay: React.FC<RecipeDisplayProps> = ({ recipe, onAddToShoppingLi
           aria-labelledby="ingredients-heading"
         >
           <div
-            className="bg-amber-50 rounded-2xl shadow-2xl p-6 md:p-8 max-w-md w-full m-4 relative flex flex-col max-h-[85vh]"
+            className="bg-amber-50 dark:bg-gray-800 rounded-2xl shadow-2xl p-6 md:p-8 max-w-md w-full m-4 relative flex flex-col max-h-[85vh]"
             onClick={e => e.stopPropagation()}
           >
             <div className="flex justify-between items-center mb-4 flex-shrink-0">
-              <h3 id="ingredients-heading" className="text-2xl font-serif font-bold text-amber-900">Ingredients ({recipe.ingredients.length})</h3>
+              <h3 id="ingredients-heading" className="text-2xl font-serif font-bold text-amber-900 dark:text-amber-100">Ingredients ({recipe.ingredients.length})</h3>
               <button
                 onClick={() => setShowIngredients(false)}
                 className="p-1 rounded-full text-amber-700 hover:bg-amber-200 transition-colors"
@@ -133,8 +133,8 @@ const RecipeDisplay: React.FC<RecipeDisplayProps> = ({ recipe, onAddToShoppingLi
       {/* Share Modal */}
       {isShareModalOpen && (
         <div className="fixed inset-0 bg-black/60 z-50 flex items-center justify-center animate-fade-in p-4" onClick={() => setIsShareModalOpen(false)}>
-          <div className="bg-amber-50 rounded-2xl shadow-2xl p-6 md:p-8 max-w-md w-full m-4" onClick={e => e.stopPropagation()}>
-            <h3 className="text-2xl font-serif font-bold text-amber-900 mb-4 text-center">Share Recipe</h3>
+          <div className="bg-amber-50 dark:bg-gray-800 rounded-2xl shadow-2xl p-6 md:p-8 max-w-md w-full m-4" onClick={e => e.stopPropagation()}>
+            <h3 className="text-2xl font-serif font-bold text-amber-900 dark:text-amber-100 mb-4 text-center">Share Recipe</h3>
             <div className="flex flex-col gap-4">
               {navigator.share && (
                 <button onClick={handleNativeShare} className="w-full text-center px-4 py-2 bg-amber-500 text-white font-semibold rounded-lg shadow-md hover:bg-amber-600 transition-all">
@@ -152,10 +152,10 @@ const RecipeDisplay: React.FC<RecipeDisplayProps> = ({ recipe, onAddToShoppingLi
 
       {/* Kitchen Mode */}
       {isKitchenMode && (
-        <div className="fixed inset-0 bg-amber-50 z-50 flex flex-col items-center justify-center p-4 text-center animate-fade-in">
+        <div className="fixed inset-0 bg-amber-50 dark:bg-gray-900 z-50 flex flex-col items-center justify-center p-4 text-center animate-fade-in">
           <div className="w-full max-w-3xl">
-            <h2 className="text-3xl sm:text-4xl font-serif text-amber-900 mb-2">{allStepsCompleted ? "Enjoy your meal!" : `Step ${currentStepIndex + 1} of ${recipe.instructions.length}`}</h2>
-            <p className="text-xl sm:text-2xl md:text-3xl text-amber-800 font-light min-h-[10rem] sm:min-h-[12rem] flex items-center justify-center p-4">
+            <h2 className="text-3xl sm:text-4xl font-serif text-amber-900 dark:text-amber-100 mb-2">{allStepsCompleted ? "Enjoy your meal!" : `Step ${currentStepIndex + 1} of ${recipe.instructions.length}`}</h2>
+            <p className="text-xl sm:text-2xl md:text-3xl text-amber-800 dark:text-amber-200 font-light min-h-[10rem] sm:min-h-[12rem] flex items-center justify-center p-4">
               {allStepsCompleted ? "You've successfully completed all the steps." : recipe.instructions[currentStepIndex]}
             </p>
 
@@ -180,22 +180,22 @@ const RecipeDisplay: React.FC<RecipeDisplayProps> = ({ recipe, onAddToShoppingLi
       )}
 
       {/* Main Recipe Display */}
-      <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg p-6 md:p-8 w-full print:bg-white print:shadow-none print:p-0">
+      <div className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-2xl shadow-lg dark:shadow-black/30 p-6 md:p-8 w-full print:bg-white print:shadow-none print:p-0">
         <div className="text-center print:text-left">
-          <h2 className="text-3xl md:text-4xl font-bold text-amber-900 font-serif mb-2 print:text-4xl">{recipe.recipeName}</h2>
-          <p className="text-amber-800/90 text-center max-w-3xl mx-auto mb-6 print:text-black print:text-left print:max-w-none print:mx-0 break-words">
+          <h2 className="text-3xl md:text-4xl font-bold text-amber-900 dark:text-amber-100 font-serif mb-2 print:text-4xl">{recipe.recipeName}</h2>
+          <p className="text-amber-800/90 dark:text-amber-200/90 text-center max-w-3xl mx-auto mb-6 print:text-black print:text-left print:max-w-none print:mx-0 break-words">
             {recipe.description}
           </p>
         </div>
 
         {/* Action Buttons */}
-        <div className="flex flex-wrap justify-center gap-2 sm:gap-3 mb-8 border-t border-b border-amber-200 py-4 no-print">
-          <button onClick={() => setIsKitchenMode(true)} className="flex items-center gap-2 px-3 py-2 text-sm sm:px-4 sm:py-2 bg-amber-100 text-amber-800 font-semibold rounded-lg shadow-sm hover:bg-amber-200 transition-all"><KitchenIcon className="w-5 h-5" /> Kitchen Mode</button>
+        <div className="flex flex-wrap justify-center gap-2 sm:gap-3 mb-8 border-t border-b border-amber-200 dark:border-gray-700 py-4 no-print">
+          <button onClick={() => setIsKitchenMode(true)} className="flex items-center gap-2 px-3 py-2 text-sm sm:px-4 sm:py-2 bg-amber-100 dark:bg-gray-700 text-amber-800 dark:text-amber-100 font-semibold rounded-lg shadow-sm hover:bg-amber-200 dark:hover:bg-gray-600 transition-all"><KitchenIcon className="w-5 h-5" /> Kitchen Mode</button>
           {onAddToShoppingList && (
             <button
               onClick={() => onAddToShoppingList(recipe)}
               disabled={isRecipeInShoppingList}
-              className="flex items-center gap-2 px-3 py-2 text-sm sm:px-4 sm:py-2 bg-amber-100 text-amber-800 font-semibold rounded-lg shadow-sm hover:bg-amber-200 transition-all disabled:bg-amber-200/50 disabled:text-amber-800/60 disabled:cursor-not-allowed">
+              className="flex items-center gap-2 px-3 py-2 text-sm sm:px-4 sm:py-2 bg-amber-100 dark:bg-gray-700 text-amber-800 dark:text-amber-100 font-semibold rounded-lg shadow-sm hover:bg-amber-200 dark:hover:bg-gray-600 transition-all disabled:bg-amber-200/50 disabled:text-amber-800/60 disabled:cursor-not-allowed">
               <ShoppingCartIcon className="w-5 h-5" />
               {isRecipeInShoppingList ? 'Added' : 'Add to List'}
             </button>
@@ -203,68 +203,68 @@ const RecipeDisplay: React.FC<RecipeDisplayProps> = ({ recipe, onAddToShoppingLi
           {onSave && (
             <button
               onClick={() => onSave(recipe)}
-              className={`flex items-center gap-2 px-3 py-2 text-sm sm:px-4 sm:py-2 ${isSaved ? 'bg-red-100 text-red-800 hover:bg-red-200' : 'bg-amber-100 text-amber-800 hover:bg-amber-200'} font-semibold rounded-lg shadow-sm transition-all`}
+              className={`flex items-center gap-2 px-3 py-2 text-sm sm:px-4 sm:py-2 ${isSaved ? 'bg-red-100 text-red-800 hover:bg-red-200 dark:bg-red-900/50 dark:text-red-200 dark:hover:bg-red-900/70' : 'bg-amber-100 text-amber-800 hover:bg-amber-200 dark:bg-gray-700 dark:text-amber-100 dark:hover:bg-gray-600'} font-semibold rounded-lg shadow-sm transition-all`}
             >
               <HeartIcon className="w-5 h-5" filled={isSaved} />
               {isSaved ? 'Saved' : 'Save'}
             </button>
           )}
-          <button onClick={handlePrint} className="flex items-center gap-2 px-3 py-2 text-sm sm:px-4 sm:py-2 bg-amber-100 text-amber-800 font-semibold rounded-lg shadow-sm hover:bg-amber-200 transition-all"><PrintIcon className="w-5 h-5" /> Print</button>
-          <button onClick={() => setIsShareModalOpen(true)} className="flex items-center gap-2 px-3 py-2 text-sm sm:px-4 sm:py-2 bg-amber-100 text-amber-800 font-semibold rounded-lg shadow-sm hover:bg-amber-200 transition-all"><ShareIcon className="w-5 h-5" /> Share</button>
+          <button onClick={handlePrint} className="flex items-center gap-2 px-3 py-2 text-sm sm:px-4 sm:py-2 bg-amber-100 dark:bg-gray-700 text-amber-800 dark:text-amber-100 font-semibold rounded-lg shadow-sm hover:bg-amber-200 dark:hover:bg-gray-600 transition-all"><PrintIcon className="w-5 h-5" /> Print</button>
+          <button onClick={() => setIsShareModalOpen(true)} className="flex items-center gap-2 px-3 py-2 text-sm sm:px-4 sm:py-2 bg-amber-100 dark:bg-gray-700 text-amber-800 dark:text-amber-100 font-semibold rounded-lg shadow-sm hover:bg-amber-200 dark:hover:bg-gray-600 transition-all"><ShareIcon className="w-5 h-5" /> Share</button>
         </div>
 
         {/* Nutrition Info */}
         {recipe.nutrition && (
           <div className="flex flex-wrap justify-center gap-4 mb-8 no-print animate-fade-in">
-            <div className="bg-amber-50 rounded-xl p-4 text-center min-w-[80px] border border-amber-100 shadow-sm">
-              <span className="block text-sm text-amber-600 font-semibold uppercase tracking-wider">Calories</span>
-              <span className="block text-xl font-bold text-amber-900">{recipe.nutrition.calories}</span>
+            <div className="bg-amber-50 dark:bg-gray-700/50 rounded-xl p-4 text-center min-w-[80px] border border-amber-100 dark:border-gray-600 shadow-sm">
+              <span className="block text-sm text-amber-600 dark:text-amber-400 font-semibold uppercase tracking-wider">Calories</span>
+              <span className="block text-xl font-bold text-amber-900 dark:text-amber-100">{recipe.nutrition.calories}</span>
             </div>
-            <div className="bg-amber-50 rounded-xl p-4 text-center min-w-[80px] border border-amber-100 shadow-sm">
-              <span className="block text-sm text-amber-600 font-semibold uppercase tracking-wider">Protein</span>
-              <span className="block text-xl font-bold text-amber-900">{recipe.nutrition.protein}</span>
+            <div className="bg-amber-50 dark:bg-gray-700/50 rounded-xl p-4 text-center min-w-[80px] border border-amber-100 dark:border-gray-600 shadow-sm">
+              <span className="block text-sm text-amber-600 dark:text-amber-400 font-semibold uppercase tracking-wider">Protein</span>
+              <span className="block text-xl font-bold text-amber-900 dark:text-amber-100">{recipe.nutrition.protein}</span>
             </div>
-            <div className="bg-amber-50 rounded-xl p-4 text-center min-w-[80px] border border-amber-100 shadow-sm">
-              <span className="block text-sm text-amber-600 font-semibold uppercase tracking-wider">Carbs</span>
-              <span className="block text-xl font-bold text-amber-900">{recipe.nutrition.carbs}</span>
+            <div className="bg-amber-50 dark:bg-gray-700/50 rounded-xl p-4 text-center min-w-[80px] border border-amber-100 dark:border-gray-600 shadow-sm">
+              <span className="block text-sm text-amber-600 dark:text-amber-400 font-semibold uppercase tracking-wider">Carbs</span>
+              <span className="block text-xl font-bold text-amber-900 dark:text-amber-100">{recipe.nutrition.carbs}</span>
             </div>
-            <div className="bg-amber-50 rounded-xl p-4 text-center min-w-[80px] border border-amber-100 shadow-sm">
-              <span className="block text-sm text-amber-600 font-semibold uppercase tracking-wider">Fat</span>
-              <span className="block text-xl font-bold text-amber-900">{recipe.nutrition.fat}</span>
+            <div className="bg-amber-50 dark:bg-gray-700/50 rounded-xl p-4 text-center min-w-[80px] border border-amber-100 dark:border-gray-600 shadow-sm">
+              <span className="block text-sm text-amber-600 dark:text-amber-400 font-semibold uppercase tracking-wider">Fat</span>
+              <span className="block text-xl font-bold text-amber-900 dark:text-amber-100">{recipe.nutrition.fat}</span>
             </div>
           </div>
         )}
 
         {/* Ingredients and Instructions */}
         <div className="no-print">
-          <div className="border-b border-amber-300 mb-6">
+          <div className="border-b border-amber-300 dark:border-gray-600 mb-6">
             <div className="flex justify-center space-x-2 md:space-x-6 -mb-px">
-              <button onClick={() => setActiveTab('ingredients')} className={`py-3 px-4 font-semibold text-lg border-b-4 transition-colors ${activeTab === 'ingredients' ? 'text-amber-800 border-amber-500' : 'text-amber-600 border-transparent hover:text-amber-800'}`}>Ingredients</button>
-              <button onClick={() => setActiveTab('instructions')} className={`py-3 px-4 font-semibold text-lg border-b-4 transition-colors ${activeTab === 'instructions' ? 'text-amber-800 border-amber-500' : 'text-amber-600 border-transparent hover:text-amber-800'}`}>Instructions</button>
+              <button onClick={() => setActiveTab('ingredients')} className={`py-3 px-4 font-semibold text-lg border-b-4 transition-colors ${activeTab === 'ingredients' ? 'text-amber-800 dark:text-amber-400 border-amber-500' : 'text-amber-600 dark:text-gray-400 border-transparent hover:text-amber-800 dark:hover:text-amber-300'}`}>Ingredients</button>
+              <button onClick={() => setActiveTab('instructions')} className={`py-3 px-4 font-semibold text-lg border-b-4 transition-colors ${activeTab === 'instructions' ? 'text-amber-800 dark:text-amber-400 border-amber-500' : 'text-amber-600 dark:text-gray-400 border-transparent hover:text-amber-800 dark:hover:text-amber-300'}`}>Instructions</button>
             </div>
           </div>
 
           {activeTab === 'ingredients' && (
             <ul className="space-y-4 mt-6 animate-fade-in-fast">
               {recipe.ingredients.map((ingredient, i) => (
-                <li key={i} onClick={() => handleToggleIngredient(i)} className="flex items-center gap-3 p-2 rounded-lg cursor-pointer hover:bg-amber-100/70">
-                  <div className={`w-6 h-6 rounded-md border-2 ${checkedIngredients.has(i) ? 'bg-amber-600 border-amber-600' : 'border-amber-400'} flex items-center justify-center flex-shrink-0 transition-colors`}>
+                <li key={i} onClick={() => handleToggleIngredient(i)} className="flex items-center gap-3 p-2 rounded-lg cursor-pointer hover:bg-amber-100/70 dark:hover:bg-gray-700/50">
+                  <div className={`w-6 h-6 rounded-md border-2 ${checkedIngredients.has(i) ? 'bg-amber-600 border-amber-600' : 'border-amber-400 dark:border-gray-500'} flex items-center justify-center flex-shrink-0 transition-colors`}>
                     {checkedIngredients.has(i) && (
                       <svg className="w-4 h-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
                       </svg>
                     )}
                   </div>
-                  <span className={`flex-grow transition-all ${checkedIngredients.has(i) ? 'line-through text-amber-800/60' : 'text-amber-800'}`}>{ingredient}</span>
+                  <span className={`flex-grow transition-all ${checkedIngredients.has(i) ? 'line-through text-amber-800/60 dark:text-gray-500' : 'text-amber-800 dark:text-gray-200'}`}>{ingredient}</span>
                 </li>
               ))}
             </ul>
           )}
           {activeTab === 'instructions' && (
-            <ol className="space-y-4 mt-6 list-decimal list-inside text-amber-800/90 marker:text-amber-600 marker:font-bold animate-fade-in-fast">
+            <ol className="space-y-4 mt-6 list-decimal list-inside text-amber-800/90 dark:text-gray-200 marker:text-amber-600 marker:font-bold animate-fade-in-fast">
               {recipe.instructions.map((step, i) => (
-                <li key={i} onClick={() => handleToggleStep(i)} className={`p-2 rounded-lg transition-colors ${!isKitchenMode ? 'cursor-pointer hover:bg-amber-100/70' : ''}`}>
-                  <span className={`transition-all ${completedSteps.has(i) ? 'line-through text-amber-800/50' : ''} break-words`}>
+                <li key={i} onClick={() => handleToggleStep(i)} className={`p-2 rounded-lg transition-colors ${!isKitchenMode ? 'cursor-pointer hover:bg-amber-100/70 dark:hover:bg-gray-700/50' : ''}`}>
+                  <span className={`transition-all ${completedSteps.has(i) ? 'line-through text-amber-800/50 dark:text-gray-500' : ''} break-words`}>
                     {step}
                   </span>
                 </li>
