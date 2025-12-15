@@ -13,17 +13,24 @@ const CameraView: React.FC<CameraViewProps> = ({ onCapture, onCancel }) => {
   const [error, setError] = useState<string | null>(null);
   const [isFlashing, setIsFlashing] = useState(false);
 
+  // Use a ref to track the stream for cleanup, preventing dependency loops
+  const streamRef = useRef<MediaStream | null>(null);
+
   const cleanupCamera = useCallback(() => {
-    if (stream) {
-      stream.getTracks().forEach((track) => track.stop());
+    if (streamRef.current) {
+      streamRef.current.getTracks().forEach((track) => track.stop());
+      streamRef.current = null;
+      setStream(null);
     }
-  }, [stream]);
+  }, []);
 
   useEffect(() => {
+    let isMounted = true;
+
     const checkPermissionsAndStartCamera = async () => {
       // First, check for basic browser support.
       if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
-        setError("Camera access is not supported by your browser.");
+        if (isMounted) setError("Camera access is not supported by your browser.");
         return;
       }
 
@@ -32,31 +39,41 @@ const CameraView: React.FC<CameraViewProps> = ({ onCapture, onCancel }) => {
         if (navigator.permissions && navigator.permissions.query) {
           const permissionStatus = await navigator.permissions.query({ name: 'camera' as PermissionName });
           if (permissionStatus.state === 'denied') {
-            setError("Camera access was denied. To take a photo, you'll need to grant permission in your browser's site settings.");
+            if (isMounted) setError("Camera access was denied. To take a photo, you'll need to grant permission in your browser's site settings.");
             return;
           }
         }
 
-        // Use optimized constraints to prevent lag
-        // 720p is often the sweet spot for balance between quality and performance on mobile web
-        // Limiting frame rate to 24fps can significantly reduce CPU usage and stuttering
+        // Use optimized constraints
         const mediaStream = await navigator.mediaDevices.getUserMedia({
           video: {
             facingMode: 'environment',
             width: { ideal: 1280 },
             height: { ideal: 720 },
-            frameRate: { ideal: 15, max: 24 }
+            // Removed strict frameRate constraints as they might not be needed now that the loop is fixed,
+            // but keeping a sane max limit is still good practice for mobile web.
+            frameRate: { max: 30 }
           },
           audio: false,
         });
 
+        if (!isMounted) {
+          // Component unmounted while loading, clean up immediately
+          mediaStream.getTracks().forEach(track => track.stop());
+          return;
+        }
+
         if (videoRef.current) {
           videoRef.current.srcObject = mediaStream;
         }
+
+        streamRef.current = mediaStream;
         setStream(mediaStream);
 
       } catch (err: any) {
         console.error("Error accessing camera:", err);
+        if (!isMounted) return;
+
         if (err.name === 'NotAllowedError' || err.name === 'PermissionDeniedError') {
           setError("Camera access was denied. To take a photo, you'll need to grant permission in your browser's site settings.");
         } else if (err.name === 'NotFoundError' || err.name === 'DevicesNotFoundError') {
@@ -70,8 +87,10 @@ const CameraView: React.FC<CameraViewProps> = ({ onCapture, onCancel }) => {
     checkPermissionsAndStartCamera();
 
     return () => {
+      isMounted = false;
       cleanupCamera();
     };
+    // Proper dependency array: empty means run ONCE on mount
   }, [cleanupCamera]);
 
   const handleCapture = () => {
@@ -90,9 +109,8 @@ const CameraView: React.FC<CameraViewProps> = ({ onCapture, onCancel }) => {
         const context = canvas.getContext('2d');
         if (context) {
           context.drawImage(video, 0, 0, canvas.width, canvas.height);
-          const imageDataUrl = canvas.toDataURL('image/jpeg', 0.85); // Compress slightly for performance
+          const imageDataUrl = canvas.toDataURL('image/jpeg', 0.85);
 
-          // Small delay to show the flash effect before closing
           setTimeout(() => {
             onCapture(imageDataUrl);
             cleanupCamera();
