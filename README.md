@@ -80,7 +80,7 @@ const response = await ai.models.generateContent({
 const recipeData = JSON.parse(response.text.trim()); // Coerces AI output into the Recipe interface
 ```
 
-## 🚧 Future Enhancements
+##  Future Enhancements
 
 *   User rating system for generated recipes.
 *   All generated recipes visible to all users unless explicitly marked private by their creators.
@@ -102,13 +102,19 @@ This project is designed to be run in an environment where environment variables
 1.  **Clone the repository (if applicable):**
     ```bash
     git clone https://github.com/your-username/snap-a-recipe.git
-    cd snap-a-recipe
+    cd snaprecipes
     ```
 
 2.  **Set up the API Key:**
     The application is configured to look for the API key in `process.env.API_KEY`. You will need to use a tool that can inject this environment variable into your static files during a build process or when serving.
+3. **Installing node:**
+    To install Node.js, download it from [nodejs.org](https://nodejs.org/) and follow the installer prompts. After installation, verify with:
+    ```bash
+    node -v
+    npm -v
+    ```
 
-3.  **Serve the application:**
+4.  **Serve the application:**
     Since this is a static React application, you can serve the `index.html` file using any local web server. For example, using `serve`:
     ```bash
     # Install serve globally if you haven't already
@@ -118,6 +124,7 @@ This project is designed to be run in an environment where environment variables
     serve .
     ```
     The server will provide a local URL (e.g., `http://localhost:3000`) to open in your browser.
+
 
 ##  Configuration
 
