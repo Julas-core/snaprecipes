@@ -4,7 +4,7 @@
 
 Snap-a-Recipe is a modern web application that leverages the power of AI to generate detailed recipes from a simple photograph of a meal. Snap a picture with your device's camera or upload an existing image, and let the application create a beautiful, easy-to-follow recipe for you.
 
-## ✨ Features
+##  Features
 
 *   **AI-Powered Recipe Generation**: Uses the Google Gemini API to analyze food images and generate unique recipes.
 *   **Camera & Upload**: Supports both taking a new photo and uploading an existing image file.
@@ -17,7 +17,7 @@ Snap-a-Recipe is a modern web application that leverages the power of AI to gene
 *   **Responsive Design**: A beautiful and functional user experience across all devices, from mobile phones to desktops.
 *   **Offline Functionality**: The shopping list is saved in your browser's local storage, making it available offline.
 
-## 🛠️ Technology Stack
+##  Technology Stack
 
 *   **Frontend**:
     *   **Framework**: [React](https://reactjs.org/)
@@ -30,7 +30,53 @@ Snap-a-Recipe is a modern web application that leverages the power of AI to gene
     *   `react-easy-crop`: For the image cropping component.
 *   **Deployment**: The application is a static single-page application (SPA) that can be served by any static file host.
 
-## 🚀 Getting Started
+##  Data Architecture
+
+The application uses **Supabase** for user authentication and persistence. AI output is coerced into a defined TypeScript interface (see `types.ts`) before being saved to the database, ensuring data integrity and queryability. This structured approach means the recipes, nutrition facts, and related metadata stay consistent and reliable across reads and writes.
+
+## AI Pipeline (Gemini)
+
+Key excerpt from `services/geminiService.ts` showing how the Gemini request is structured and validated:
+
+```ts
+const imageParts = imageData.match(/^data:(.+);base64,(.+)$/);
+const response = await ai.models.generateContent({
+    model: "gemini-2.5-flash",
+    contents: {
+        parts: [
+            { inlineData: { data: base64ImageData, mimeType } },
+            { text: `Analyze the food in this image and generate a detailed recipe in ${language}... Ensure the response is in JSON format.` },
+        ],
+    },
+    config: {
+        responseMimeType: "application/json",
+        responseSchema: {
+            type: Type.OBJECT,
+            properties: {
+                recipeName: { type: Type.STRING },
+                description: { type: Type.STRING },
+                ingredients: { type: Type.ARRAY, items: { type: Type.STRING } },
+                instructions: { type: Type.ARRAY, items: { type: Type.STRING } },
+                nutrition: {
+                    type: Type.OBJECT,
+                    properties: {
+                        calories: { type: Type.STRING },
+                        protein: { type: Type.STRING },
+                        carbs: { type: Type.STRING },
+                        fat: { type: Type.STRING },
+                    },
+                    required: ["calories", "protein", "carbs", "fat"],
+                },
+            },
+            required: ["recipeName", "description", "ingredients", "instructions", "nutrition"],
+        },
+    },
+});
+
+const recipeData = JSON.parse(response.text.trim()); // Coerces AI output into the Recipe interface
+```
+
+##  Getting Started
 
 Follow these instructions to get a copy of the project up and running on your local machine.
 
@@ -63,12 +109,12 @@ This project is designed to be run in an environment where environment variables
     ```
     The server will provide a local URL (e.g., `http://localhost:3000`) to open in your browser.
 
-## ⚙️ Configuration
+##  Configuration
 
 The only required configuration is the Google Gemini API Key.
 
 *   **`API_KEY`**: This is your secret key for the Gemini API. The application expects this to be available as `process.env.API_KEY`. **Do not expose this key publicly or commit it to version control.**
 
-## 📄 License
+##  License
 
 This project is licensed under the MIT License.
