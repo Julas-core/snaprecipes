@@ -2,6 +2,8 @@
 
 > Turn your food photos into delicious recipes!
 
+![App preview GIF](./assets/Snap%20a%20Recipe%20how%20it%20works.gif) <!-- Replace with your 10s GIF or screenshot path -->
+
 Snap-a-Recipe is a modern web application that leverages the power of AI to generate detailed recipes from a simple photograph of a meal. Snap a picture with your device's camera or upload an existing image, and let the application create a beautiful, easy-to-follow recipe for you.
 
 ##  Features
@@ -33,6 +35,8 @@ Snap-a-Recipe is a modern web application that leverages the power of AI to gene
 ##  Data Architecture
 
 The application uses **Supabase** for user authentication and persistence. AI output is coerced into a defined TypeScript interface (see `types.ts`) before being saved to the database, ensuring data integrity and queryability. This structured approach means the recipes, nutrition facts, and related metadata stay consistent and reliable across reads and writes.
+
+The primary database schema consists of a `recipes` table with structured fields (for example: `recipeName`, `description`, `ingredients` as a JSON array, `instructions` as a JSON array, and `nutrition` as an object).
 
 ## AI Pipeline (Gemini)
 
@@ -75,6 +79,12 @@ const response = await ai.models.generateContent({
 
 const recipeData = JSON.parse(response.text.trim()); // Coerces AI output into the Recipe interface
 ```
+
+## 🚧 Future Enhancements
+
+*   User rating system for generated recipes.
+*   All generated recipes visible to all users unless explicitly marked private by their creators.
+*   Advanced search and filtering by ingredient, diet, and prep time.
 
 ##  Getting Started
 
