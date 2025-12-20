@@ -36,8 +36,11 @@ Snap-a-Recipe is a modern web application that leverages the power of AI to gene
 
 The application uses **Supabase** for user authentication and persistence. AI output is coerced into a defined TypeScript interface (see `types.ts`) before being saved to the database, ensuring data integrity and queryability. This structured approach means the recipes, nutrition facts, and related metadata stay consistent and reliable across reads and writes.
 
+<<<<<<< HEAD
 The primary database schema consists of a `recipes` table with structured fields (for example: `recipeName`, `description`, `ingredients` as a JSON array, `instructions` as a JSON array, and `nutrition` as an object).
 
+=======
+>>>>>>> 90c9708af2133a6a3028c6284c4308783fad4aec
 ## AI Pipeline (Gemini)
 
 Key excerpt from `services/geminiService.ts` showing how the Gemini request is structured and validated:
@@ -80,12 +83,15 @@ const response = await ai.models.generateContent({
 const recipeData = JSON.parse(response.text.trim()); // Coerces AI output into the Recipe interface
 ```
 
+<<<<<<< HEAD
 ##  Future Enhancements
 
 *   User rating system for generated recipes.
 *   All generated recipes visible to all users unless explicitly marked private by their creators.
 *   Advanced search and filtering by ingredient, diet, and prep time.
 
+=======
+>>>>>>> 90c9708af2133a6a3028c6284c4308783fad4aec
 ##  Getting Started
 
 Follow these instructions to get a copy of the project up and running on your local machine.
@@ -125,7 +131,10 @@ This project is designed to be run in an environment where environment variables
     ```
     The server will provide a local URL (e.g., `http://localhost:3000`) to open in your browser.
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> 90c9708af2133a6a3028c6284c4308783fad4aec
 ##  Configuration
 
 The only required configuration is the Google Gemini API Key.
