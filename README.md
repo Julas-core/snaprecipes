@@ -92,7 +92,7 @@ This project is designed to be run in an environment where environment variables
 1.  **Clone the repository (if applicable):**
     ```bash
     git clone https://github.com/your-username/snap-a-recipe.git
-    cd snap-a-recipe
+    cd snaprecipes
     ```
 
 2.  **Set up the API Key:**
