@@ -2,6 +2,8 @@
 
 > Turn your food photos into delicious recipes!
 
+![App preview GIF](./assets/Snap%20a%20Recipe%20how%20it%20works.gif) <!-- Replace with your 10s GIF or screenshot path -->
+
 Snap-a-Recipe is a modern web application that leverages the power of AI to generate detailed recipes from a simple photograph of a meal. Snap a picture with your device's camera or upload an existing image, and let the application create a beautiful, easy-to-follow recipe for you.
 
 ##  Features
@@ -34,6 +36,11 @@ Snap-a-Recipe is a modern web application that leverages the power of AI to gene
 
 The application uses **Supabase** for user authentication and persistence. AI output is coerced into a defined TypeScript interface (see `types.ts`) before being saved to the database, ensuring data integrity and queryability. This structured approach means the recipes, nutrition facts, and related metadata stay consistent and reliable across reads and writes.
 
+<<<<<<< HEAD
+The primary database schema consists of a `recipes` table with structured fields (for example: `recipeName`, `description`, `ingredients` as a JSON array, `instructions` as a JSON array, and `nutrition` as an object).
+
+=======
+>>>>>>> 90c9708af2133a6a3028c6284c4308783fad4aec
 ## AI Pipeline (Gemini)
 
 Key excerpt from `services/geminiService.ts` showing how the Gemini request is structured and validated:
@@ -76,6 +83,12 @@ const response = await ai.models.generateContent({
 const recipeData = JSON.parse(response.text.trim()); // Coerces AI output into the Recipe interface
 ```
 
+##  Future Enhancements
+
+*   User rating system for generated recipes.
+*   All generated recipes visible to all users unless explicitly marked private by their creators.
+*   Advanced search and filtering by ingredient, diet, and prep time.
+
 ##  Getting Started
 
 Follow these instructions to get a copy of the project up and running on your local machine.
@@ -97,8 +110,15 @@ This project is designed to be run in an environment where environment variables
 
 2.  **Set up the API Key:**
     The application is configured to look for the API key in `process.env.API_KEY`. You will need to use a tool that can inject this environment variable into your static files during a build process or when serving.
+    
+3. **Installing node:**
+    To install Node.js, download it from [nodejs.org](https://nodejs.org/) and follow the installer prompts. After installation, verify with:
+    ```bash
+    node -v
+    npm -v
+    ```
 
-3.  **Serve the application:**
+4.  **Serve the application:**
     Since this is a static React application, you can serve the `index.html` file using any local web server. For example, using `serve`:
     ```bash
     # Install serve globally if you haven't already
