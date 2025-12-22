@@ -83,15 +83,12 @@ const response = await ai.models.generateContent({
 const recipeData = JSON.parse(response.text.trim()); // Coerces AI output into the Recipe interface
 ```
 
-<<<<<<< HEAD
 ##  Future Enhancements
 
 *   User rating system for generated recipes.
 *   All generated recipes visible to all users unless explicitly marked private by their creators.
 *   Advanced search and filtering by ingredient, diet, and prep time.
 
-=======
->>>>>>> 90c9708af2133a6a3028c6284c4308783fad4aec
 ##  Getting Started
 
 Follow these instructions to get a copy of the project up and running on your local machine.
@@ -113,6 +110,7 @@ This project is designed to be run in an environment where environment variables
 
 2.  **Set up the API Key:**
     The application is configured to look for the API key in `process.env.API_KEY`. You will need to use a tool that can inject this environment variable into your static files during a build process or when serving.
+    
 3. **Installing node:**
     To install Node.js, download it from [nodejs.org](https://nodejs.org/) and follow the installer prompts. After installation, verify with:
     ```bash
@@ -131,10 +129,6 @@ This project is designed to be run in an environment where environment variables
     ```
     The server will provide a local URL (e.g., `http://localhost:3000`) to open in your browser.
 
-<<<<<<< HEAD
-
-=======
->>>>>>> 90c9708af2133a6a3028c6284c4308783fad4aec
 ##  Configuration
 
 The only required configuration is the Google Gemini API Key.
