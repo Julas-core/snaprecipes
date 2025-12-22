@@ -4,6 +4,8 @@
 
 ![App preview GIF](./assets/Snap%20a%20Recipe%20how%20it%20works.gif) <!-- Replace with your 10s GIF or screenshot path -->
 
+![App preview GIF](./assets/Snap%20a%20Recipe%20how%20it%20works.gif) <!-- Replace with your 10s GIF or screenshot path -->
+
 Snap-a-Recipe is a modern web application that leverages the power of AI to generate detailed recipes from a simple photograph of a meal. Snap a picture with your device's camera or upload an existing image, and let the application create a beautiful, easy-to-follow recipe for you.
 
 ##  Features
@@ -36,11 +38,9 @@ Snap-a-Recipe is a modern web application that leverages the power of AI to gene
 
 The application uses **Supabase** for user authentication and persistence. AI output is coerced into a defined TypeScript interface (see `types.ts`) before being saved to the database, ensuring data integrity and queryability. This structured approach means the recipes, nutrition facts, and related metadata stay consistent and reliable across reads and writes.
 
-<<<<<<< HEAD
 The primary database schema consists of a `recipes` table with structured fields (for example: `recipeName`, `description`, `ingredients` as a JSON array, `instructions` as a JSON array, and `nutrition` as an object).
 
-=======
->>>>>>> 90c9708af2133a6a3028c6284c4308783fad4aec
+
 ## AI Pipeline (Gemini)
 
 Key excerpt from `services/geminiService.ts` showing how the Gemini request is structured and validated:
