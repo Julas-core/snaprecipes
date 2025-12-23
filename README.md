@@ -115,17 +115,16 @@ This project is designed to be run in an environment where environment variables
     To install Node.js, download it from [nodejs.org](https://nodejs.org/) and follow the installer prompts. After installation, verify with:
     ```bash
     node -v
-    npm -v
     ```
 
-4.  **Serve the application:**
-    Since this is a static React application, you can serve the `index.html` file using any local web server. For example, using `serve`:
+4.  **Run the Project**
+   To run this project follow the following steps:
     ```bash
-    # Install serve globally if you haven't already
-    npm install -g serve
+    # Install npm  if you haven't already
+    npm install
 
-    # Serve the project directory
-    serve .
+    # run the project directory
+    npm run dev
     ```
     The server will provide a local URL (e.g., `http://localhost:3000`) to open in your browser.
 
@@ -137,4 +136,4 @@ The only required configuration is the Google Gemini API Key.
 
 ##  License
 
-This project is licensed under the MIT License.
+This project is licensed under the reative Commons Attribution-NonCommercial 4.0 License.
