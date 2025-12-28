@@ -18,7 +18,7 @@ const Terms: React.FC = () => {
                 </p>
 
                 <h3 className="text-xl font-semibold mt-6 mb-2">2. Prohibited Uses</h3>
-                <p>You agree not to use the Service to upload or generate content that is unlawful, obscene, defamatory, or otherwise objectionable.</p>
+                <p>You agree not to suse the Service to upload or generate content that is unlawful, obscene, defamatory, or otherwise objectionable.</p>
 
                 <h3 className="text-xl font-semibold mt-6 mb-2">3. Disclaimer</h3>
                 <p>

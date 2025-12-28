@@ -10,9 +10,7 @@ export interface SavedRecipeDB {
 
 export const recipeService = {
     async saveRecipe(
-        recipe: Recipe,
-        userId: string
-    ): Promise<Recipe | null> {
+recipe: Recipe, userId: string, visibility: any    ): Promise<Recipe | null> {
         if (!supabase) return null;
 
         const row = {

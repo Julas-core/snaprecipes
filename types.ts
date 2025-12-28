@@ -1,4 +1,5 @@
 export interface Recipe {
+  visibility: any;
   id?: string;
   recipeName: string;
   description: string;

@@ -12,14 +12,17 @@ import { recipeService } from '../services/recipeService';
 import { UserProfile } from '../services/profileService';
 import { ShoppingListItem } from '../components/ShoppingList';
 
+type RecipeVisibility = 'public' | 'private';
+
 interface HomeProps {
     session: any;
     userProfile: UserProfile | null;
     shoppingList: ShoppingListItem[];
     onAddToShoppingList: (recipe: Recipe) => void;
+    onRequireSignIn: () => void;
 }
 
-const Home: React.FC<HomeProps> = ({ session, userProfile, shoppingList, onAddToShoppingList }) => {
+const Home: React.FC<HomeProps> = ({ session, userProfile, shoppingList, onAddToShoppingList, onRequireSignIn }) => {
     const [image, setImage] = useState<string | null>(null);
     const [imageUrl, setImageUrl] = useState<string | null>(null);
     const [imageToCrop, setImageToCrop] = useState<string | null>(null);
@@ -30,6 +33,11 @@ const Home: React.FC<HomeProps> = ({ session, userProfile, shoppingList, onAddTo
     const [isReadingFile, setIsReadingFile] = useState<boolean>(false);
     const [language, setLanguage] = useState<string>('English');
     const [savedRecipes, setSavedRecipes] = useState<Recipe[]>([]);
+    const [saveVisibility, setSaveVisibility] = useState<RecipeVisibility>('public');
+    const [searchQuery, setSearchQuery] = useState('');
+    const [publicResults, setPublicResults] = useState<Recipe[]>([]);
+    const [isSearching, setIsSearching] = useState(false);
+    const [remainingQuota, setRemainingQuota] = useState<number | null>(null);
 
     const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -79,7 +87,8 @@ const Home: React.FC<HomeProps> = ({ session, userProfile, shoppingList, onAddTo
         } else {
             // Toggle on (add)
             try {
-                const saved = await recipeService.saveRecipe(recipe, session.user.id);
+                const visibility = recipe.visibility ?? saveVisibility;
+                const saved = await recipeService.saveRecipe({ ...recipe, visibility }, session.user.id, visibility);
                 if (saved) {
                     setSavedRecipes(prev => [saved, ...prev]);
                     // Update active recipe with ID if needed
@@ -91,6 +100,24 @@ const Home: React.FC<HomeProps> = ({ session, userProfile, shoppingList, onAddTo
                 console.error("Failed to save recipe", e);
                 setError("Failed to save recipe.");
             }
+        }
+    };
+
+    const handleSearchPublic = async () => {
+        setIsSearching(true);
+        setError(null);
+        try {
+            const tokens = searchQuery
+                .split(/[\s,]+/)
+                .map(t => t.trim())
+                .filter(Boolean);
+            const results = await (recipeService as any).searchPublicRecipes(searchQuery, tokens);
+            setPublicResults(results);
+        } catch (e: any) {
+            console.error('Failed to search public recipes', e);
+            setError(e.message || 'Failed to search recipes.');
+        } finally {
+            setIsSearching(false);
         }
     };
 
@@ -134,6 +161,12 @@ const Home: React.FC<HomeProps> = ({ session, userProfile, shoppingList, onAddTo
     const handleGetRecipe = async () => {
         if (!image) return;
 
+        if (!session?.user) {
+            setError("Please sign in to generate recipes. You'll be redirected to sign in now.");
+            onRequireSignIn();
+            return;
+        }
+
         setIsLoading(true);
         setError(null);
         setActiveRecipe(null);
@@ -143,13 +176,21 @@ const Home: React.FC<HomeProps> = ({ session, userProfile, shoppingList, onAddTo
                 ? `The user has the following dietary preferences/restrictions: ${userProfile.dietary_prefs.join(', ')}. Please adapt the recipe to be suitable for them.`
                 : undefined;
 
-            const generatedRecipe = await generateRecipeFromImage(image, language, dietaryContext);
+            const { recipe: generatedRecipe, remaining, limit } = await generateRecipeFromImage(image, language, dietaryContext, session?.access_token);
             setActiveRecipe({ ...generatedRecipe, imageUrl: image });
             setImageUrl(image);
+            if (remaining !== undefined) {
+                setRemainingQuota(remaining);
+            } else if (limit !== undefined) {
+                setRemainingQuota(limit);
+            }
             trackEvent('generate_recipe', { success: true, recipe_name: generatedRecipe.recipeName });
         } catch (e: any) {
             setError(e.message || "An unknown error occurred.");
             trackEvent('generate_recipe', { success: false, error: e.message });
+            if (e.message?.toLowerCase?.().includes('limit')) {
+                setRemainingQuota(0);
+            }
         } finally {
             setIsLoading(false);
         }
@@ -187,6 +228,30 @@ const Home: React.FC<HomeProps> = ({ session, userProfile, shoppingList, onAddTo
 
     const isCurrentRecipeInShoppingList = activeRecipe ? shoppingList.some(item => item.recipeName === activeRecipe.recipeName) : false;
     const isCurrentRecipeSaved = activeRecipe ? savedRecipes.some(r => r.recipeName === activeRecipe.recipeName) : false;
+
+    const handleRateRecipe = async (rating: number) => {
+        if (!session?.user || !session?.access_token) {
+            setError("Please sign in to rate recipes.");
+            onRequireSignIn();
+            return;
+        }
+
+        if (!activeRecipe?.id) {
+            setError("Save the recipe first, then rate it.");
+            return;
+        }
+
+        try {
+            const result = await (recipeService as any).rateRecipe(activeRecipe.id, rating, session.access_token);
+            if (!result) return;
+
+            setActiveRecipe(prev => prev ? { ...prev, averageRating: result.averageRating, ratingCount: result.ratingCount, userRating: result.userRating } : prev);
+            setSavedRecipes(prev => prev.map(r => r.id === activeRecipe.id ? { ...r, averageRating: result.averageRating, ratingCount: result.ratingCount, userRating: result.userRating } : r));
+        } catch (e: any) {
+            console.error('Failed to rate recipe', e);
+            setError(e.message || 'Failed to rate recipe.');
+        }
+    };
 
     return (
         <div className="w-full flex-grow flex flex-col justify-center items-center">
@@ -273,6 +338,59 @@ const Home: React.FC<HomeProps> = ({ session, userProfile, shoppingList, onAddTo
                         <input type="file" ref={fileInputRef} onChange={handleFileChange} className="hidden" accept="image/*" />
                     </div>
 
+                    <div className="w-full mt-8 bg-white/60 dark:bg-gray-800/60 backdrop-blur-sm p-6 rounded-2xl shadow-lg">
+                        <div className="flex flex-col gap-4">
+                            <div className="flex flex-col sm:flex-row gap-4 sm:items-end">
+                                <div className="flex-1">
+                                    <label className="block text-sm font-semibold text-amber-800 dark:text-amber-200 mb-1" htmlFor="search-query">Search public recipes (name or ingredients)</label>
+                                    <input
+                                        id="search-query"
+                                        type="text"
+                                        value={searchQuery}
+                                        onChange={(e) => setSearchQuery(e.target.value)}
+                                        placeholder="e.g., pesto pasta basil tomato"
+                                        className="w-full px-4 py-2 rounded-lg border border-amber-200 dark:border-gray-600 bg-white dark:bg-gray-700 text-amber-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-amber-400"
+                                    />
+                                </div>
+                                <button
+                                    onClick={handleSearchPublic}
+                                    disabled={isSearching}
+                                    className="px-5 py-3 bg-amber-600 text-white font-semibold rounded-lg shadow-md hover:bg-amber-700 transition disabled:bg-amber-400"
+                                >
+                                    {isSearching ? 'Searching...' : 'Search'}
+                                </button>
+                            </div>
+                            {publicResults.length > 0 && (
+                                <div className="grid md:grid-cols-2 gap-4">
+                                    {publicResults.map((recipe) => (
+                                        <div key={recipe.id || recipe.recipeName} className="p-4 rounded-xl border border-amber-200 dark:border-gray-700 bg-white dark:bg-gray-800 shadow-sm">
+                                            <div className="flex justify-between items-start gap-2">
+                                                <div>
+                                                    <h4 className="text-lg font-semibold text-amber-900 dark:text-amber-100">{recipe.recipeName}</h4>
+                                                    <p className="text-sm text-amber-700 dark:text-amber-300 line-clamp-2">{recipe.description}</p>
+                                                </div>
+                                                {recipe.averageRating !== undefined && recipe.ratingCount !== undefined && (
+                                                    <div className="text-sm text-amber-700 dark:text-amber-300">{recipe.averageRating?.toFixed?.(1) ?? '0.0'} ({recipe.ratingCount || 0})</div>
+                                                )}
+                                            </div>
+                                            <div className="mt-3 flex justify-end">
+                                                <button
+                                                    onClick={() => handleSelectSavedRecipe(recipe)}
+                                                    className="px-4 py-2 text-sm font-semibold rounded-lg bg-amber-500 text-white hover:bg-amber-600"
+                                                >
+                                                    View
+                                                </button>
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+                            )}
+                            {publicResults.length === 0 && !isSearching && (
+                                <p className="text-sm text-amber-700 dark:text-amber-300">No public recipes yet. Try searching by name or ingredients.</p>
+                            )}
+                        </div>
+                    </div>
+
                     <SavedRecipes
                         recipes={savedRecipes}
                         onSelect={handleSelectSavedRecipe}
@@ -309,6 +427,8 @@ const Home: React.FC<HomeProps> = ({ session, userProfile, shoppingList, onAddTo
                                     isRecipeInShoppingList={isCurrentRecipeInShoppingList}
                                     onSave={handleSaveRecipe}
                                     isSaved={isCurrentRecipeSaved}
+                                    onRate={handleRateRecipe}
+                                    canRate={!!session?.user}
                                 />
                             </div>
                         ) : (
@@ -319,6 +439,11 @@ const Home: React.FC<HomeProps> = ({ session, userProfile, shoppingList, onAddTo
                                     <WandIcon className="w-7 h-7 transition-transform duration-300 group-hover:rotate-12" />
                                     Generate Recipe
                                 </button>
+                                <p className="mt-3 text-sm text-amber-700 dark:text-amber-200">
+                                    {remainingQuota !== null
+                                        ? `You have ${remainingQuota} of 5 recipes left today (signed-in users).`
+                                        : 'Signed-in users can generate up to 5 recipes per day while we stay on the free API tier.'}
+                                </p>
                             </div>
                         )}
                     </div>

@@ -1,19 +1,53 @@
 import { GoogleGenAI, Type } from "@google/genai";
 import { Recipe } from "../types";
 
+const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
+
 /**
  * Generates a recipe from an image by calling the Gemini API directly.
  * @param {string} imageData - The base64 encoded data URL of the image.
  * @param {string} language - The language for the recipe to be generated in.
  * @returns {Promise<Recipe>} A promise that resolves to the generated recipe.
  */
+export interface GeneratedRecipeResult {
+  recipe: Recipe;
+  remaining?: number;
+  limit?: number;
+}
+
 export const generateRecipeFromImage = async (
   imageData: string,
   language: string = 'English',
-  dietaryContext?: string
-): Promise<Recipe> => {
+  dietaryContext?: string,
+  accessToken?: string
+): Promise<GeneratedRecipeResult> => {
   try {
-    // Access the API key using Vite's standard import.meta.env
+    // Prefer server-side generation with quota enforcement when Supabase auth is available
+    if (supabaseUrl && accessToken) {
+      const response = await fetch(`${supabaseUrl}/functions/v1/generate-recipe`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${accessToken}`,
+        },
+        body: JSON.stringify({ imageData, language, dietaryContext }),
+      });
+
+      const payload = await response.json();
+
+      if (!response.ok) {
+        const message = payload?.error || 'Failed to generate recipe.';
+        throw new Error(message);
+      }
+
+      if (!payload?.recipe) {
+        throw new Error('Unexpected response from recipe generator.');
+      }
+
+      return { recipe: payload.recipe as Recipe, remaining: payload.remaining, limit: payload.limit };
+    }
+
+    // Fallback: direct Gemini call (no quota enforcement)
     const API_KEY = import.meta.env.VITE_GEMINI_API_KEY;
 
     if (!API_KEY) {
@@ -84,7 +118,7 @@ export const generateRecipeFromImage = async (
     const jsonText = response.text.trim();
     const recipeData = JSON.parse(jsonText);
 
-    return recipeData;
+    return { recipe: recipeData };
 
   } catch (error: any) {
     console.error("Error generating recipe from Gemini:", error);
@@ -95,8 +129,10 @@ export const generateRecipeFromImage = async (
     if (error.message) {
       if (error.message.includes('API_KEY')) {
         userMessage = "System Configuration Error: API Key is missing or invalid.";
+      } else if (error.message.includes('Unauthorized')) {
+        userMessage = "Please sign in to generate recipes.";
       } else if (error.message.includes('429')) {
-        userMessage = "We are receiving too many requests right now. Please wait a moment and try again.";
+        userMessage = "Daily recipe limit reached. Please try again tomorrow.";
       } else if (error.message.includes('503') || error.message.includes('500')) {
         userMessage = "The AI service is currently experiencing issues. Please try again later.";
       } else if (error.message.includes('SAFETY') || error.message.includes('blocked')) {

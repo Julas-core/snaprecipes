@@ -11,10 +11,7 @@ export const createImage = (url: string): Promise<HTMLImageElement> =>
 
 export default async function getCroppedImg(
   imageSrc: string,
-  pixelCrop: Area,
-  quality: number = 0.8,
-  maxWidth: number = 1200,
-  maxHeight: number = 1200
+  pixelCrop: Area
 ): Promise<string> {
   const image = await createImage(imageSrc);
   const canvas = document.createElement('canvas');
@@ -24,18 +21,8 @@ export default async function getCroppedImg(
     throw new Error('Could not get canvas context');
   }
 
-  // Calculate dimensions while maintaining aspect ratio and staying within max limits
-  let targetWidth = pixelCrop.width;
-  let targetHeight = pixelCrop.height;
-
-  if (targetWidth > maxWidth || targetHeight > maxHeight) {
-    const ratio = Math.min(maxWidth / targetWidth, maxHeight / targetHeight);
-    targetWidth = Math.round(targetWidth * ratio);
-    targetHeight = Math.round(targetHeight * ratio);
-  }
-
-  canvas.width = targetWidth;
-  canvas.height = targetHeight;
+  canvas.width = pixelCrop.width;
+  canvas.height = pixelCrop.height;
 
   ctx.drawImage(
     image,
@@ -45,11 +32,11 @@ export default async function getCroppedImg(
     pixelCrop.height,
     0,
     0,
-    targetWidth,
-    targetHeight
+    pixelCrop.width,
+    pixelCrop.height
   );
 
-  return canvas.toDataURL('image/jpeg', quality);
+  return canvas.toDataURL('image/jpeg');
 }
 
 export function dataURLtoFile(dataurl: string, filename: string): File {
