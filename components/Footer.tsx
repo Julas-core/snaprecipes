@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 
 const Footer: React.FC = () => {
+  const githubUrl = import.meta.env.VITE_GITHUB_URL || 'https://github.com/Julas-core/snaprecipes';
   return (
     <footer className="w-full max-w-4xl text-center mt-8 py-4 no-print">
       <div className="text-xs text-amber-700/80 dark:text-amber-400/80 flex justify-center items-center gap-2">
@@ -18,6 +19,10 @@ const Footer: React.FC = () => {
         <Link to="/faq" className="hover:underline hover:text-amber-800 dark:hover:text-amber-200 transition-colors">
           FAQ
         </Link>
+        <span>|</span>
+        <a href={githubUrl} target="_blank" rel="noopener noreferrer" aria-label="Open the Snap-a-Recipe Github repository" className="hover:underline hover:text-amber-800 dark:hover:text-amber-200 transition-colors" title="GitHub">
+          GitHub
+        </a>
       </div>
     </footer>
   );
