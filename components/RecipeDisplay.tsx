@@ -275,23 +275,24 @@ const RecipeDisplay: React.FC<RecipeDisplayProps> = ({ recipe, onAddToShoppingLi
 
         {/* Print-only View */}
         <div className="hidden print:block">
+          {recipe.imageUrl && (
+            <div className="mb-6">
+              <img 
+                src={recipe.imageUrl} 
+                alt={recipe.recipeName}
+                className="w-full max-h-80 object-cover rounded-xl border border-gray-200"
+              />
+            </div>
+          )}
           <div className="mb-8">
-            <h3 className="text-2xl font-bold mb-4 font-serif text-black border-b border-gray-300 pb-2">Ingredients</h3>
+            <h3 className="text-2xl font-bold mb-4 font-serif text-yellow border-b border-gray-300 pb-2">
+              Ingredients
+            </h3>
             <ul className="space-y-2 list-disc list-inside text-base text-black">
-              {recipe.ingredients.map((ing, i) => (
-                <li key={`print-ing-${i}`} className="mb-1">{ing}</li>
-              ))}
+            {recipe.ingredients.map((ing,i) => (
+              <li key={`print-ing-${i}`} className="mb-1">{ing}</li>
+            ))}
             </ul>
-          </div>
-          <div>
-            <h3 className="text-2xl font-bold mb-4 font-serif text-black border-b border-gray-300 pb-2">Instructions</h3>
-            <ol className="space-y-3 list-decimal list-inside text-base text-black">
-              {recipe.instructions.map((step, i) => (
-                <li key={`print-inst-${i}`} className="mb-2 leading-relaxed break-words">
-                  {step}
-                </li>
-              ))}
-            </ol>
           </div>
         </div>
 
