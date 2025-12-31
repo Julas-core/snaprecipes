@@ -57,7 +57,16 @@ const RecipeDisplay: React.FC<RecipeDisplayProps> = ({ recipe, onAddToShoppingLi
     setCompletedSteps(new Set());
   };
 
-  const handlePrint = () => window.print();
+  const handlePrint = () =>{
+    const originalTitle = document.title;
+    // Set the title to the recipe name so the PDF file is named correctly
+    document.title=`${recipe.recipeName} - Recipe`;
+    window.print();
+  
+    setTimeout(() => {
+      document.title=originalTitle;
+    }, 100);
+  };
 
   const fullRecipeText = useMemo(() => {
     return `Recipe: ${recipe.recipeName}\n\n${recipe.description}\n\nIngredients:\n- ${recipe.ingredients.join('\n- ')}\n\nInstructions:\n${recipe.instructions.map((step, i) => `${i + 1}. ${step}`).join('\n')}`;
