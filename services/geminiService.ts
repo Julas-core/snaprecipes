@@ -42,7 +42,18 @@ export const generateRecipeFromImage = async (
             },
           },
           {
-            text: `Analyze the food in this image and generate a detailed recipe in ${language}. The recipe should include a creative name, a short description, a list of ingredients with measurements, step-by-step instructions, and estimated nutritional information (calories, protein, carbs, fat). ${dietaryContext ? dietaryContext : ''} Ensure the response is in JSON format.`,
+            text: `Analyze the food in this image and generate a detailed recipe in ${language}. 
+            The recipe should include:
+            1. A common recipeName.
+            2. A 'premiumName' (a creative, Michelin-star style name for the dish).
+            3. A 'chefVibe' which must be exactly one of: 'Rustic', 'Elegant', 'Fiery', 'Fresh', or 'Modern'.
+            4. A short description.
+            5. A list of ingredients with measurements.
+            6. Step-by-step instructions.
+            7. Estimated nutritional information (calories, protein, carbs, fat).
+            
+            ${dietaryContext ? dietaryContext : ''} 
+            Ensure the response is in JSON format.`,
           },
         ],
       },
@@ -51,7 +62,13 @@ export const generateRecipeFromImage = async (
         responseSchema: {
           type: Type.OBJECT,
           properties: {
-            recipeName: { type: Type.STRING, description: "The name of the recipe." },
+            recipeName: { type: Type.STRING, description: "The common name of the recipe." },
+            premiumName: { type: Type.STRING, description: "A creative, high-end name for the dish." },
+            chefVibe: {
+              type: Type.STRING,
+              enum: ['Rustic', 'Elegant', 'Fiery', 'Fresh', 'Modern'],
+              description: "The visual/aesthetic vibe of the dish."
+            },
             description: { type: Type.STRING, description: "A brief description of the dish." },
             ingredients: {
               type: Type.ARRAY,
@@ -75,7 +92,7 @@ export const generateRecipeFromImage = async (
               description: "Estimated nutritional information."
             },
           },
-          required: ["recipeName", "description", "ingredients", "instructions", "nutrition"],
+          required: ["recipeName", "premiumName", "chefVibe", "description", "ingredients", "instructions", "nutrition"],
         },
       },
     });
