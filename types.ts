@@ -2,6 +2,8 @@ export interface Recipe {
   visibility: any;
   id?: string;
   recipeName: string;
+  premiumName?: string;
+  chefVibe?: 'Rustic' | 'Elegant' | 'Fiery' | 'Fresh' | 'Modern';
   description: string;
   ingredients: string[];
   instructions: string[];
