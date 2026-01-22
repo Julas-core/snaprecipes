@@ -34,9 +34,6 @@ const Home: React.FC<HomeProps> = ({ session, userProfile, shoppingList, onAddTo
     const [language, setLanguage] = useState<string>('English');
     const [savedRecipes, setSavedRecipes] = useState<Recipe[]>([]);
     const [saveVisibility, setSaveVisibility] = useState<RecipeVisibility>('public');
-    const [searchQuery, setSearchQuery] = useState('');
-    const [publicResults, setPublicResults] = useState<Recipe[]>([]);
-    const [isSearching, setIsSearching] = useState(false);
     const [remainingQuota, setRemainingQuota] = useState<number | null>(null);
 
     const fileInputRef = useRef<HTMLInputElement>(null);
@@ -100,24 +97,6 @@ const Home: React.FC<HomeProps> = ({ session, userProfile, shoppingList, onAddTo
                 console.error("Failed to save recipe", e);
                 setError("Failed to save recipe.");
             }
-        }
-    };
-
-    const handleSearchPublic = async () => {
-        setIsSearching(true);
-        setError(null);
-        try {
-            const tokens = searchQuery
-                .split(/[\s,]+/)
-                .map(t => t.trim())
-                .filter(Boolean);
-            const results = await (recipeService as any).searchPublicRecipes(searchQuery, tokens);
-            setPublicResults(results);
-        } catch (e: any) {
-            console.error('Failed to search public recipes', e);
-            setError(e.message || 'Failed to search recipes.');
-        } finally {
-            setIsSearching(false);
         }
     };
 
@@ -338,58 +317,7 @@ const Home: React.FC<HomeProps> = ({ session, userProfile, shoppingList, onAddTo
                         <input type="file" ref={fileInputRef} onChange={handleFileChange} className="hidden" accept="image/*" />
                     </div>
 
-                    <div className="w-full mt-8 bg-white/60 dark:bg-gray-800/60 backdrop-blur-sm p-6 rounded-2xl shadow-lg">
-                        <div className="flex flex-col gap-4">
-                            <div className="flex flex-col sm:flex-row gap-4 sm:items-end">
-                                <div className="flex-1">
-                                    <label className="block text-sm font-semibold text-amber-800 dark:text-amber-200 mb-1" htmlFor="search-query">Search public recipes (name or ingredients)</label>
-                                    <input
-                                        id="search-query"
-                                        type="text"
-                                        value={searchQuery}
-                                        onChange={(e) => setSearchQuery(e.target.value)}
-                                        placeholder="e.g., pesto pasta basil tomato"
-                                        className="w-full px-4 py-2 rounded-lg border border-amber-200 dark:border-gray-600 bg-white dark:bg-gray-700 text-amber-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-amber-400"
-                                    />
-                                </div>
-                                <button
-                                    onClick={handleSearchPublic}
-                                    disabled={isSearching}
-                                    className="px-5 py-3 bg-amber-600 text-white font-semibold rounded-lg shadow-md hover:bg-amber-700 transition disabled:bg-amber-400"
-                                >
-                                    {isSearching ? 'Searching...' : 'Search'}
-                                </button>
-                            </div>
-                            {publicResults.length > 0 && (
-                                <div className="grid md:grid-cols-2 gap-4">
-                                    {publicResults.map((recipe) => (
-                                        <div key={recipe.id || recipe.recipeName} className="p-4 rounded-xl border border-amber-200 dark:border-gray-700 bg-white dark:bg-gray-800 shadow-sm">
-                                            <div className="flex justify-between items-start gap-2">
-                                                <div>
-                                                    <h4 className="text-lg font-semibold text-amber-900 dark:text-amber-100">{recipe.recipeName}</h4>
-                                                    <p className="text-sm text-amber-700 dark:text-amber-300 line-clamp-2">{recipe.description}</p>
-                                                </div>
-                                                {recipe.averageRating !== undefined && recipe.ratingCount !== undefined && (
-                                                    <div className="text-sm text-amber-700 dark:text-amber-300">{recipe.averageRating?.toFixed?.(1) ?? '0.0'} ({recipe.ratingCount || 0})</div>
-                                                )}
-                                            </div>
-                                            <div className="mt-3 flex justify-end">
-                                                <button
-                                                    onClick={() => handleSelectSavedRecipe(recipe)}
-                                                    className="px-4 py-2 text-sm font-semibold rounded-lg bg-amber-500 text-white hover:bg-amber-600"
-                                                >
-                                                    View
-                                                </button>
-                                            </div>
-                                        </div>
-                                    ))}
-                                </div>
-                            )}
-                            {publicResults.length === 0 && !isSearching && (
-                                <p className="text-sm text-amber-700 dark:text-amber-300">No public recipes yet. Try searching by name or ingredients.</p>
-                            )}
-                        </div>
-                    </div>
+
 
                     <SavedRecipes
                         recipes={savedRecipes}
