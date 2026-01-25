@@ -9,10 +9,8 @@ const DAILY_LIMIT = 5;
 const WINDOW_SECONDS = 60 * 60 * 24; // 24h rolling window
 
 serve(async (req) => {
-  const corsHeaders = getCorsHeaders(req)
   if (req.method === 'OPTIONS') {
-    // Fast path for CORS preflight
-    return new Response('ok', { headers: corsHeaders, status: 200 })
+    return new Response('ok', { headers: corsHeaders, status: 200 });
   }
 
   try {
@@ -143,7 +141,7 @@ serve(async (req) => {
     return new Response(JSON.stringify({ recipe: recipeData, remaining, limit: DAILY_LIMIT }), {
       headers: { ...corsHeaders, 'Content-Type': 'application/json' },
       status: 200,
-    })
+    });
   } catch (error) {
     console.error('Error in Edge Function:', error)
     return new Response(JSON.stringify({ error: error.message }), {
