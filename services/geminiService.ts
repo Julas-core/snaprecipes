@@ -1,5 +1,7 @@
 import { GoogleGenAI, Type } from "@google/genai";
 import { Recipe } from "../types";
+import { access } from "fs";
+import { log } from "console";
 
 const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
 
@@ -21,34 +23,38 @@ export const generateRecipeFromImage = async (
   dietaryContext?: string,
   accessToken?: string
 ): Promise<GeneratedRecipeResult> => {
-  try {
-    // Prefer server-side generation with quota enforcement when Supabase auth is available
-    if (supabaseUrl && accessToken) {
-      const response = await fetch(`${supabaseUrl}/functions/v1/generate-recipe`, {
+  let serverError = null;
+  if (supabaseUrl && accessToken) {
+    try {
+      const response = await fetch(`${supabaseUrl}/functions/v1/generate-recipe`,{
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${accessToken}`,
+
         },
-        body: JSON.stringify({ imageData, language, dietaryContext }),
+        body: JSON.stringify({imageData,language,dietaryContext}),
       });
 
-      const payload = await response.json();
-
-      if (!response.ok) {
-        const message = payload?.error || 'Failed to generate recipe.';
-        throw new Error(message);
+      if (response.ok) {
+        const payload = await response.json();
+        if (payload?.recipe) {
+          return {recipe: payload.recipe as Recipe, remaining: payload.remaining, limit:payload.limit};
+        }
+      }else {
+        const errText = await response.text();
+        serverError = new Error(`Server error: ${response.status} ${errText}`);
+        console.log("Generation from the server failed, attempting client-side fallback...", serverError);
       }
-
-      if (!payload?.recipe) {
-        throw new Error('Unexpected response from recipe generator.');
-      }
-
-      return { recipe: payload.recipe as Recipe, remaining: payload.remaining, limit: payload.limit };
+    } catch (err) {
+      serverError = err;
+      console.log("Server connection failed, attempting client-side fallback..", err);
     }
-
-    // Fallback: direct Gemini call (no quota enforcement)
-    // This is used if Supabase is not configured or user is not logged in (depending on logic)
+  }
+  
+  // Fallback: direct Gemini call (no quota enforcement)
+  // This is used if Supabase is not configured or user is not logged in (depending on logic)
+  try{
     const API_KEY = import.meta.env.VITE_GEMINI_API_KEY;
 
     if (!API_KEY) {
