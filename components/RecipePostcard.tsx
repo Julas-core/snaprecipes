@@ -119,7 +119,7 @@ const RecipePostcard: React.FC<RecipePostcardProps> = ({ recipe, isOpen, onClose
 
                 {/* Info Text Below */}
                 <p className="text-white/60 text-center mt-6 text-sm flex items-center justify-center gap-2">
-                    Tip: Take a screenshot to share with friends! ✨
+                    Tip: Take a screenshot to share with friends!
                 </p>
             </div>
         </div>
