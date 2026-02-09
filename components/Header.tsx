@@ -20,10 +20,18 @@ const Header: React.FC<HeaderProps> = ({ cartCount, onOpenCart, user, onSignInCl
     <header className="w-full bg-white/80 dark:bg-gray-900/90 shadow-sm sticky top-0 z-40 border-b border-amber-100 dark:border-gray-800 no-print backdrop-blur-md transition-colors duration-200">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
         {/* Logo Section */}
-        <div className="flex items-center">
+        <div className="flex items-center gap-6">
           <Link to="/" className="flex items-center">
             <img src={logo} alt="Snap-a-Recipe" className="h-12 w-auto object-contain" />
           </Link>
+          <nav className="hidden md:flex items-center gap-2 bg-amber-50 dark:bg-gray-800/50 p-1 rounded-full border border-amber-100 dark:border-gray-700">
+             <Link to="/" className="px-4 py-1.5 rounded-full text-sm font-medium text-amber-900 dark:text-amber-100 hover:bg-white dark:hover:bg-gray-700 hover:shadow-sm transition-all">
+                Home
+             </Link>
+             <Link to="/explore" className="px-4 py-1.5 rounded-full text-sm font-medium text-amber-900 dark:text-amber-100 hover:bg-white dark:hover:bg-gray-700 hover:shadow-sm transition-all flex items-center gap-1">
+                Explore
+             </Link>
+          </nav>
         </div>
 
         {/* Right Side Actions */}

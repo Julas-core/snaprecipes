@@ -15,6 +15,7 @@ import ProfileSettings from './components/ProfileSettings';
 
 // Pages
 import Home from './pages/Home';
+import Explore from './pages/Explore';
 import Privacy from './pages/Privacy';
 import Terms from './pages/Terms';
 import FAQ from './pages/FAQ';
@@ -208,6 +209,14 @@ const AppLayout: React.FC = () => {
           <Routes>
             <Route path="/" element={
               <Home
+                session={session}
+                userProfile={userProfile}
+                shoppingList={shoppingList}
+                onAddToShoppingList={handleAddToShoppingList}
+              />
+            } />
+            <Route path="/explore" element={
+              <Explore
                 session={session}
                 userProfile={userProfile}
                 shoppingList={shoppingList}

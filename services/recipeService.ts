@@ -58,6 +58,27 @@ recipe: Recipe, userId: string, visibility: any    ): Promise<Recipe | null> {
         }));
     },
 
+    async getPublicFeed(): Promise<Recipe[]> {
+        if (!supabase) return [];
+
+        const { data, error } = await supabase
+            .from('saved_recipes')
+            .select('*')
+            .contains('recipe_data', { visibility: 'public' }) 
+            .order('created_at', { ascending: false })
+            .limit(50);
+
+        if (error) {
+            console.error('Error fetching public feed:', error);
+            return [];
+        }
+
+        return (data || []).map((row: SavedRecipeDB) => ({
+            ...row.recipe_data,
+            id: row.id
+        }));
+    },
+
     async deleteRecipe(
         recipeId: string
     ): Promise<boolean> {
@@ -74,5 +95,23 @@ recipe: Recipe, userId: string, visibility: any    ): Promise<Recipe | null> {
         }
 
         return true;
+    },
+
+    async rateRecipe(recipeId: string, rating: number, accessToken: string) {
+        if (!supabase) return null;
+
+        const { data, error } = await supabase.functions.invoke('rate-recipe', {
+            body: { recipeId, rating },
+            headers: {
+                Authorization: `Bearer ${accessToken}`
+            }
+        });
+
+        if (error) {
+            console.error('Error rating recipe:', error);
+            throw error;
+        }
+
+        return data;
     }
 };

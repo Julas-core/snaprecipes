@@ -110,9 +110,10 @@ const RecipePostcard: React.FC<RecipePostcardProps> = ({ recipe, isOpen, onClose
 
                             {/* App Branding "Stamp" */}
                             <div className={`${theme.stamp} px-3 py-1 text-[10px] font-black tracking-tighter rounded-sm rotate-2 flex items-center gap-1 shadow-sm`}>
-                                <span className="uppercase">Snap-a-Recipe</span>
-                                <span className="opacity-50">#AI</span>
+                                <span className="uppercase">Try generating a recipe with </span>
+                                <span><a href="https://snaparecipe.vercel.app">Snap-a-Recipe</a></span>
                             </div>
+                            
                         </div>
                     </div>
                 </div>

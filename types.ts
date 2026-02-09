@@ -14,4 +14,18 @@ export interface Recipe {
     carbs: string;
     fat: string;
   };
+  authorId: string;
+  authorName?: string;
+  likesCount: number;
+  remixedFromId?: string;
+  comments?: Comment[];
+}
+
+export interface Comment {
+  id: string;
+  userId: string;
+  userName: string;
+  text: string;
+  imageUrl?: string;
+  createdAt: string;
 }
