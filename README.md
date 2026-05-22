@@ -9,16 +9,16 @@ Snap-a-Recipe is a modern web application that leverages the power of AI to gene
 
 ##  Features
 
-*   **AI-Powered Recipe Generation**: Uses the Google Gemini API to analyze food images and generate unique recipes.
-*   **Camera & Upload**: Supports both taking a new photo and uploading an existing image file.
-*   **Image Cropping**: An intuitive interface to crop and zoom your image, focusing on the dish for the best results.
-*   **Interactive Recipe Display**: A clean, readable layout for recipes, with checkable ingredients and instructions.
-*   **Kitchen Mode**: A full-screen, step-by-step guided cooking experience with large text, perfect for use in the kitchen.
-*   **Shopping List**: Add ingredients from any recipe to a persistent shopping list to keep track of what you need.
-*   **Multi-Language Support**: Generate recipes in various languages including English, Spanish, French, German, and Italian.
-*   **Print & Share**: Easily print a clean version of the recipe or share the text content using your device's native share functionality.
-*   **Responsive Design**: A beautiful and functional user experience across all devices, from mobile phones to desktops.
-*   **Offline Functionality**: The shopping list is saved in your browser's local storage, making it available offline.
+*   **Recipe Generation Powered by AI**: Utilizes Google Gemini API to identify images related to food and create unique recipes.
+*   **Camera and Upload Options**: Allows either capturing new pictures or uploading existing image files.
+*   **Image Cropping**: User-friendly cropping and zooming tools to ensure only your picture of the dish gets analyzed.
+*   **Recipe Presentation Format**: Easy-to-read layout for recipes that highlights ingredients as well as step-by-step preparation instructions.
+*   **Kitchen Mode**: Full-screen view with clear large-font cooking instructions to help you in the kitchen while preparing dishes.
+*   **Ingredients Shopping List**: Allows adding ingredients listed on any recipe to an ongoing list to save you time and money.
+*   **Multiple Languages Options**: Generates recipes in multiple languages such as English, Spanish, French, German, and Italian.
+*   **Print and Share Recipes**: Option to print or copy the text of the recipe to easily share on different devices.
+*   **Responsive Design**: Stunning and user-friendly design regardless of whether users are accessing the site through their smartphones or computer.
+*   **Work Offline**: The shopping list of ingredients will be saved locally to your browser.
 
 ##  Technology Stack
 
@@ -35,9 +35,9 @@ Snap-a-Recipe is a modern web application that leverages the power of AI to gene
 
 ##  Data Architecture
 
-The application uses **Supabase** for user authentication and persistence. AI output is coerced into a defined TypeScript interface (see `types.ts`) before being saved to the database, ensuring data integrity and queryability. This structured approach means the recipes, nutrition facts, and related metadata stay consistent and reliable across reads and writes.
+The software relies on **Supabase** for authenticating users and persisting their data. The generated AI data is forced to fit a certain TypeScript type (defined in `types.ts`) before saving in the database. As a result, the structure ensures consistency when reading and writing the recipes' metadata.
 
-The primary database schema consists of a `recipes` table with structured fields (for example: `recipeName`, `description`, `ingredients` as a JSON array, `instructions` as a JSON array, and `nutrition` as an object).
+The main database structure has a table named `recipes` with predefined fields like `recipeName`, `description`, `ingredients` (JSON array), `instructions` (JSON array), `nutrition` (object).
 
 
 ## AI Pipeline (Gemini)
