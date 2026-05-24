@@ -136,3 +136,6 @@ The only required configuration is the Google Gemini API Key.
 ##  License
 
 This project is licensed under the reative Commons Attribution-NonCommercial 4.0 License.
+
+## Related
+you can find the Android version built with kotlin [Here](https://github.com/Julas-core/SnapARecipe-Android-)
