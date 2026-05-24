@@ -2,7 +2,7 @@
 
 > Turn your food photos into delicious recipes!
 
-![App preview GIF](./assets/HowItWorks.gif) <!-- Replace with your 10s GIF or screenshot path -->
+![App preview GIF](./assets/HowItWorks(1).gif) <!-- Replace with your 10s GIF or screenshot path -->
 
 
 Snap-a-Recipe is a modern web application that leverages the power of AI to generate detailed recipes from a simple photograph of a meal. Snap a picture with your device's camera or upload an existing image, and let the application create a beautiful, easy-to-follow recipe for you.
